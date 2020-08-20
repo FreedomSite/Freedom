@@ -2,9 +2,7 @@ package gg.freedomsite.freedom.utils;
 
 import gg.freedomsite.freedom.Freedom;
 import gg.freedomsite.freedom.player.FPlayer;
-import net.minecraft.server.v1_16_R2.EntityPlayer;
 import net.minecraft.server.v1_16_R2.MinecraftServer;
-import net.minecraft.server.v1_16_R2.PacketPlayOutPlayerInfo;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -13,7 +11,6 @@ import org.apache.http.util.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
-import org.bukkit.craftbukkit.v1_16_R2.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 
@@ -21,9 +18,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FreedomUtils
 {
+
+    private static final Pattern hexPattern = Pattern.compile("(?<!\\\\)(#[a-fA-F0-9]{6})");
 
     private static final ChatColor[] colorfulColors = new ChatColor[]{
             ChatColor.AQUA,
@@ -39,6 +40,19 @@ public class FreedomUtils
     public static ChatColor randomColor()
     {
         return colorfulColors[ThreadLocalRandom.current().nextInt(colorfulColors.length)];
+    }
+
+
+
+    public static String format(String message) {
+        Matcher matcher = hexPattern.matcher(message);
+
+        while (matcher.find()) {
+            String color = message.substring(matcher.start(), matcher.end());
+                message = message.replace(color, "" + net.md_5.bungee.api.ChatColor.of(color));
+        }
+
+        return message;
     }
 
     public static String getVersion()

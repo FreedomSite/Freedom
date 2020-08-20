@@ -13,12 +13,10 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.permissions.PermissionAttachment;
-
-import java.util.List;
 
 public class PlayerListener extends FreedomListener
 {
+    //TODO: PERMISSIONS DON'T UNSET!
 
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
@@ -102,8 +100,13 @@ public class PlayerListener extends FreedomListener
             event.setFormat(Rank.IMPOSTER.getPrefix() + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + ChatColor.translateAlternateColorCodes('&', event.getMessage()));
             return;
         }
-        event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + ChatColor.translateAlternateColorCodes('&', event.getMessage()) :
-                ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + ChatColor.translateAlternateColorCodes('&', event.getMessage()));
+
+        String message = event.getMessage();
+        message = ChatColor.translateAlternateColorCodes('&', message);
+        message = FreedomUtils.format(message);
+
+        event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + message :
+                ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + message);
     }
 
 }
