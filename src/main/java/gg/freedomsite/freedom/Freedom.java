@@ -3,6 +3,8 @@ package gg.freedomsite.freedom;
 import gg.freedomsite.freedom.config.RankConfig;
 import gg.freedomsite.freedom.handlers.CommandHandler;
 import gg.freedomsite.freedom.handlers.ListenerHandler;
+import gg.freedomsite.freedom.httpd.HttpdServerHandler;
+import gg.freedomsite.freedom.httpd.modules.UserModule;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.sql.SQLConnection;
@@ -23,6 +25,8 @@ public class Freedom extends JavaPlugin
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
 
+    private HttpdServerHandler httpdServerHandler;
+
     private RankConfig rankConfig;
 
     private PlayerData playerData;
@@ -42,6 +46,10 @@ public class Freedom extends JavaPlugin
         {
             plugin.saveResource("database.db", false);
         }
+
+        this.httpdServerHandler = new HttpdServerHandler();
+        httpdServerHandler.addHandler("/test", new UserModule());
+        httpdServerHandler.start();
     }
 
 
@@ -84,6 +92,8 @@ public class Freedom extends JavaPlugin
                 getPlayerData().getPlayers().remove(players.getUniqueId());
             }
         }
+
+        httpdServerHandler.stop();
 
         //commandHandler.unregister(); disable this for now
     }
