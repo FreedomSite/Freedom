@@ -48,6 +48,11 @@
             <artifactId>json</artifactId>
             <version>20200518</version>
         </dependency>
+        <dependency>
+            <groupId>me.totalfreedom</groupId>
+            <artifactId>bukkittelnet</artifactId>
+            <version>4.5</version>
+        </dependency>
     </dependencies>
 
 

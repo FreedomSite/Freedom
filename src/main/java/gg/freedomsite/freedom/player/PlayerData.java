@@ -2,6 +2,7 @@ package gg.freedomsite.freedom.player;
 
 import com.google.common.collect.Maps;
 import gg.freedomsite.freedom.Freedom;
+import gg.freedomsite.freedom.ranking.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -74,6 +75,45 @@ public class PlayerData
         return null;
     }
 
+    public FPlayer getPlayerFromIP(String address)
+    {
+        try (Connection connection = plugin.getSql().getConnection())
+        {
+            PreparedStatement statement = connection.prepareStatement("SELECT * FROM `players` WHERE ip=?");
+            statement.setString(1, address);
+            ResultSet set = statement.executeQuery();
+            if (set.next())
+            {
+                FPlayer fplayer = new FPlayer(UUID.fromString(set.getString("uuid")));
+                String username = set.getString("username");
+                int rank = set.getInt("rank");
+                String ip = set.getString("ip");
+                String customtag = set.getString("customtag");
+                String loginMSG = set.getString("loginmessage");
+                boolean muted = set.getBoolean("muted");
+                boolean frozen = set.getBoolean("frozen");
+                boolean imposter = set.getBoolean("imposter");
+                boolean commandspy = set.getBoolean("commandspy");
+                boolean vanished = set.getBoolean("vanished");
+
+                fplayer.setUsername(username);
+                fplayer.setRank(rank);
+                fplayer.setIp(ip);
+                fplayer.setTag(customtag);
+                fplayer.setLoginMSG(loginMSG);
+                fplayer.setMuted(muted);
+                fplayer.setFrozen(frozen);
+                fplayer.setImposter(imposter);
+                fplayer.setCommandspy(commandspy);
+                fplayer.setVanished(vanished);
+                return fplayer;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
     public boolean exists(UUID uuid)
     {
         try (Connection connection = plugin.getSql().getConnection())
@@ -131,5 +171,17 @@ public class PlayerData
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public Rank getRankFromInt(int level)
+    {
+        for (Rank rank : Rank.values())
+        {
+            if (rank.getRankLevel() == level)
+            {
+                return rank;
+            }
+        }
+        return Rank.NON;
     }
 }
