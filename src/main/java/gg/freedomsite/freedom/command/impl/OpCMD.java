@@ -7,11 +7,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class OPCMD extends FreedomCommand
+public class OpCMD extends FreedomCommand
 {
 
 
-    public OPCMD() {
+    public OpCMD() {
         super("/op <player>", "op", "Ops a player", Rank.OP);
     }
 
@@ -32,7 +32,22 @@ public class OPCMD extends FreedomCommand
         }
 
         FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+
+        if (fPlayer.isAdmin())
+        {
+            sender.sendMessage("§eThis player does not to be opped!");
+            return;
+        }
+
+        if (fPlayer.isImposter())
+        {
+            sender.sendMessage("§eThis player can not be opped!");
+            return;
+        }
+
         fPlayer.setRank(Rank.OP);
+        getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
+        getPlugin().getPlayerData().update(fPlayer);
         Bukkit.broadcastMessage("§b" + sender.getName() + " - Opping " + player.getName());
         player.sendMessage("§eYou are now op!");
     }

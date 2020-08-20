@@ -16,7 +16,7 @@ public abstract class FreedomCommand
 {
 
     public final String IN_GAME_ONLY = ChatColor.RED + "You can only use this in-game.";
-    public final String NO_PERMISSION = ChatColor.WHITE + "You lack the permission node " + ChatColor.RED + "%s" + ChatColor.WHITE + "!";
+    public final String NO_PERMISSION = "§cYou do not have permission to execute this command.";
     public final String PLAYER_NOT_FOUND = "§7This player can not be found, make sure the player is online and you spelt the name correctly.";
 
 

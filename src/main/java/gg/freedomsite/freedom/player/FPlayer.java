@@ -1,11 +1,13 @@
 package gg.freedomsite.freedom.player;
 
+import gg.freedomsite.freedom.Freedom;
 import gg.freedomsite.freedom.ranking.Rank;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.bukkit.permissions.PermissionAttachment;
 
 import java.util.UUID;
 
@@ -25,6 +27,9 @@ public class FPlayer
     private boolean frozen;
     private boolean imposter;
     private boolean commandspy;
+    private boolean staffchat; //does not need to be stored in db
+
+    private PermissionAttachment attachment; //manages perms
 
     public FPlayer(UUID uuid)
     {
@@ -37,6 +42,8 @@ public class FPlayer
         this.frozen = false;
         this.imposter = false;
         this.commandspy = false;
+        this.staffchat = false;
+        this.attachment = null;
     }
 
     public Rank getRank()
@@ -60,6 +67,7 @@ public class FPlayer
     {
         this.rank = rank;
     }
+
 
     public boolean isAdmin()
     {

@@ -39,7 +39,7 @@ public class SQLConnection
                     "\t`username` VARCHAR(16),\n" +
                     "\t`rank` INT,\n" +
                     "\t`ip` VARCHAR(15),\n" +
-                    "\t`customtag` VARCHAR(12),\n" +
+                    "\t`customtag` VARCHAR(16),\n" +
                     "\t`muted` BOOLEAN,\n" +
                     "\t`frozen` BOOLEAN,\n" +
                     "\t`imposter` BOOLEAN,\n" +

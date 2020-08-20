@@ -1,5 +1,6 @@
 package gg.freedomsite.freedom;
 
+import gg.freedomsite.freedom.config.RankConfig;
 import gg.freedomsite.freedom.handlers.CommandHandler;
 import gg.freedomsite.freedom.handlers.ListenerHandler;
 import gg.freedomsite.freedom.player.FPlayer;
@@ -22,6 +23,8 @@ public class Freedom extends JavaPlugin
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
 
+    private RankConfig rankConfig;
+
     private PlayerData playerData;
 
     @Override
@@ -31,6 +34,9 @@ public class Freedom extends JavaPlugin
 
         getConfig().options().copyDefaults(true);
         saveConfig();
+
+        this.rankConfig = new RankConfig();
+        rankConfig.generate();
 
         if (!getConfig().getBoolean("mysql.enabled") && !new File(getDataFolder(), "database.db").exists())
         {
@@ -57,8 +63,11 @@ public class Freedom extends JavaPlugin
         {
             for (Player players : getServer().getOnlinePlayers())
             {
-                FPlayer fplayer = getPlayerData().getData(players.getUniqueId());
+                FPlayer fplayer = getPlayerData().getDataFromSQL(players.getUniqueId());
                 getPlayerData().getPlayers().put(players.getUniqueId(), fplayer);
+                //registering perms
+                fplayer.setAttachment(players.addAttachment(Freedom.get()));
+                getRankConfig().setPlayerPermissions(fplayer);
             }
         }
     }
@@ -72,8 +81,6 @@ public class Freedom extends JavaPlugin
         {
             for (Player players : getServer().getOnlinePlayers())
             {
-                FPlayer fplayer = getPlayerData().getData(players.getUniqueId());
-                getPlayerData().update(fplayer);
                 getPlayerData().getPlayers().remove(players.getUniqueId());
             }
         }

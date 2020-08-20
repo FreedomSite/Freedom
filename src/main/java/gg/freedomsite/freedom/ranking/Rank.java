@@ -48,4 +48,16 @@ public enum Rank
     {
         return rankLevel >= rank.getRankLevel();
     }
+
+    public static Rank findRank(String name)
+    {
+        for (Rank rank : Rank.values())
+        {
+            if (rank.name().equalsIgnoreCase(name))
+            {
+                return rank;
+            }
+        }
+        return null;
+    }
 }

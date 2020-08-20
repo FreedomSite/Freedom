@@ -30,7 +30,22 @@ public class DeopCMD extends FreedomCommand
         }
 
         FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+
+        if (fPlayer.isAdmin())
+        {
+            sender.sendMessage("§eThis player can not be deopped, silly!");
+            return;
+        }
+
+        if (fPlayer.isImposter())
+        {
+            sender.sendMessage("§eThis player can not be opped!");
+            return;
+        }
+
         fPlayer.setRank(Rank.NON);
+        getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
+        getPlugin().getPlayerData().update(fPlayer);
         Bukkit.broadcastMessage("§c" + sender.getName() + " - Deopping " + player.getName());
         player.sendMessage("§eYou have lost op!");
     }

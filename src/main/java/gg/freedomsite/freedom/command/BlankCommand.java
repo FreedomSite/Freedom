@@ -43,6 +43,11 @@ public class BlankCommand extends Command {
                 Player player = (Player) sender;
                 FPlayer fplayer = Freedom.get().getPlayerData().getData(player.getUniqueId());
 
+                if (fplayer.isImposter())
+                {
+                    player.sendMessage("§cYou do not have permission to execute this command. Please verify first!");
+                    return true;
+                }
                 if (!fplayer.getRank().isAtleast(command.getRank()))
                 {
                     player.sendMessage("§cYou do not have permission to execute this command.");
