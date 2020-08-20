@@ -1,0 +1,6 @@
+name: Freedom
+version: 0.2
+description: The freedom core
+api-version: 1.16
+authors: [Taahh]
+main: gg.freedomsite.freedom.Freedom

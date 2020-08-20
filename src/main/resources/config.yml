@@ -1,0 +1,7 @@
+mysql:
+  enabled: false #Will enable SQLite if false
+  username: ""
+  password: ""
+  database: ""
+  host: ""
+  port: 3306
