@@ -78,7 +78,7 @@ public class Freedom extends JavaPlugin
             }
         }
 
-        commandHandler.unregister();
+        //commandHandler.unregister(); disable this for now
     }
 
 
