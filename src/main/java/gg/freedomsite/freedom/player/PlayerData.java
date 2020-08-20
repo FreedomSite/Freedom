@@ -17,8 +17,8 @@ public class PlayerData
     private final Map<UUID, FPlayer> players = Maps.newHashMap();
 
     public final String SELECT = "SELECT * FROM `players` WHERE uuid=?";
-    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `muted`, `frozen`, `imposter`, `commandspy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, muted=?, frozen=?, imposter=?, commandspy=? WHERE uuid=?";
+    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `loginmessage`, `muted`, `frozen`, `imposter`, `commandspy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, loginmessage=?, muted=?, frozen=?, imposter=?, commandspy=? WHERE uuid=?";
 
     private Freedom plugin = Freedom.get();
 
@@ -50,6 +50,7 @@ public class PlayerData
             int rank = set.getInt("rank");
             String ip = set.getString("ip");
             String customtag = set.getString("customtag");
+            String loginMSG = set.getString("loginmessage");
             boolean muted = set.getBoolean("muted");
             boolean frozen = set.getBoolean("frozen");
             boolean imposter = set.getBoolean("imposter");
@@ -59,6 +60,7 @@ public class PlayerData
             fplayer.setRank(rank);
             fplayer.setIp(ip);
             fplayer.setTag(customtag);
+            fplayer.setLoginMSG(loginMSG);
             fplayer.setMuted(muted);
             fplayer.setFrozen(frozen);
             fplayer.setImposter(imposter);
@@ -94,10 +96,11 @@ public class PlayerData
             statement.setInt(3, player.getRank().getRankLevel());
             statement.setString(4, player.getIp());
             statement.setString(5, player.getTag());
-            statement.setBoolean(6, player.isMuted());
-            statement.setBoolean(7, player.isFrozen());
-            statement.setBoolean(8, player.isImposter());
-            statement.setBoolean(9, player.isCommandspy());
+            statement.setString(6, player.getLoginMSG());
+            statement.setBoolean(7, player.isMuted());
+            statement.setBoolean(8, player.isFrozen());
+            statement.setBoolean(9, player.isImposter());
+            statement.setBoolean(10, player.isCommandspy());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -114,11 +117,12 @@ public class PlayerData
             statement.setInt(3, player.getRank().getRankLevel());
             statement.setString(4, player.getIp());
             statement.setString(5, player.getTag());
-            statement.setBoolean(6, player.isMuted());
-            statement.setBoolean(7, player.isFrozen());
-            statement.setBoolean(8, player.isImposter());
-            statement.setBoolean(9, player.isCommandspy());
-            statement.setString(10, player.getUuid().toString());
+            statement.setString(6, player.getLoginMSG());
+            statement.setBoolean(7, player.isMuted());
+            statement.setBoolean(8, player.isFrozen());
+            statement.setBoolean(9, player.isImposter());
+            statement.setBoolean(10, player.isCommandspy());
+            statement.setString(11, player.getUuid().toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

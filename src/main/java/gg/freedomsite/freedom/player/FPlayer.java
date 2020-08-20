@@ -23,6 +23,7 @@ public class FPlayer
     private int rank;
     private String ip;
     private String tag;
+    private String loginMSG;
     private boolean muted;
     private boolean frozen;
     private boolean imposter;
@@ -38,6 +39,7 @@ public class FPlayer
         this.rank = -2;
         this.ip = "";
         this.tag = "";
+        this.loginMSG = "";
         this.muted = false;
         this.frozen = false;
         this.imposter = false;

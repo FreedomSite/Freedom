@@ -36,14 +36,6 @@ public enum Rank
         return prefix;
     }
 
-    public void setPrefix(String prefix) {
-        this.prefix = prefix;
-    }
-
-    public void setLoginMsg(String loginMsg) {
-        this.loginMsg = loginMsg;
-    }
-
     public boolean isAtleast(Rank rank)
     {
         return rankLevel >= rank.getRankLevel();

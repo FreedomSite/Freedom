@@ -57,9 +57,12 @@ public class PlayerListener extends FreedomListener
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + Rank.IMPOSTER.getLoginMsg());
         }
-        else if (!fPlayer.isImposter() && fPlayer.isAdmin())
+        else if (!fPlayer.isImposter() && fPlayer.isAdmin() && fPlayer.getLoginMSG().isEmpty())
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getRank().getLoginMsg());
+        } else if (!fPlayer.isImposter() && fPlayer.isAdmin() && !fPlayer.getLoginMSG().isEmpty())
+        {
+            Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getLoginMSG());
         }
 
 
