@@ -1,5 +1,5 @@
 server:
-  motd: "&-Freedom"
+  motd: "&-Freedom §8- &-%mcversion%"
 mysql:
   enabled: false #Will enable SQLite if false
   username: ""
