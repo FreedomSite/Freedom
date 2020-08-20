@@ -35,7 +35,7 @@ public class OpCMD extends FreedomCommand
 
         if (fPlayer.isAdmin())
         {
-            sender.sendMessage("§eThis player does not to be opped!");
+            sender.sendMessage("§eThis player does not need to be opped!");
             return;
         }
 

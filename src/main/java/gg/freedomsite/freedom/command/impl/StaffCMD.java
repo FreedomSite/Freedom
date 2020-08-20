@@ -3,6 +3,7 @@ package gg.freedomsite.freedom.command.impl;
 import gg.freedomsite.freedom.command.FreedomCommand;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.ranking.Rank;
+import gg.freedomsite.freedom.utils.FreedomUtils;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -69,6 +70,7 @@ public class StaffCMD extends FreedomCommand
 
                 fplayer.setRank(Rank.OP);
                 fplayer.setCommandspy(false);
+                FreedomUtils.resetToOP(fplayer);
                 getPlugin().getRankConfig().setPlayerPermissions(fplayer);
                 getPlugin().getPlayerData().update(fplayer);
                 Bukkit.broadcastMessage("§c" + sender.getName() + " - Removing " + player.getName() + " from the staff list");

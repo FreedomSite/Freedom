@@ -5,6 +5,7 @@ import gg.freedomsite.freedom.listeners.FreedomListener;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.ranking.Rank;
+import gg.freedomsite.freedom.utils.FreedomUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -53,19 +54,32 @@ public class PlayerListener extends FreedomListener
             fPlayer.setImposter(true);
         }
 
-        if (fPlayer.isImposter() && fPlayer.isAdmin())
+        //login msgs
+        if (!fPlayer.isVanished() && fPlayer.isImposter() && fPlayer.isAdmin())
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + Rank.IMPOSTER.getLoginMsg());
         }
-        else if (!fPlayer.isImposter() && fPlayer.isAdmin() && fPlayer.getLoginMSG().isEmpty())
+        else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && fPlayer.getLoginMSG().isEmpty())
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getRank().getLoginMsg());
-        } else if (!fPlayer.isImposter() && fPlayer.isAdmin() && !fPlayer.getLoginMSG().isEmpty())
+        } else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && !fPlayer.getLoginMSG().isEmpty())
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getLoginMSG());
         }
 
+        //now set tab list colors
+        if (fPlayer.isAdmin())
+        {
+            player.setPlayerListName(fPlayer.getRank().getColor() + player.getName());
+        }
 
+        //vanished
+        if (fPlayer.isVanished())
+        {
+            FreedomUtils.vanish(fPlayer, Bukkit.getOnlinePlayers(), true);
+            player.sendMessage("§7§oYou have joined silently..");
+            event.setJoinMessage("");
+        }
 
     }
 

@@ -28,6 +28,7 @@ public class FPlayer
     private boolean frozen;
     private boolean imposter;
     private boolean commandspy;
+    private boolean vanished;
     private boolean staffchat; //does not need to be stored in db
 
     private PermissionAttachment attachment; //manages perms
@@ -44,6 +45,7 @@ public class FPlayer
         this.frozen = false;
         this.imposter = false;
         this.commandspy = false;
+        this.vanished = false;
         this.staffchat = false;
         this.attachment = null;
     }

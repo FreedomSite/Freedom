@@ -8,6 +8,8 @@ import gg.freedomsite.freedom.httpd.modules.UserModule;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.sql.SQLConnection;
+import gg.freedomsite.freedom.world.Flatlands;
+import gg.freedomsite.freedom.world.StaffWorld;
 import lombok.AccessLevel;
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -26,6 +28,9 @@ public class Freedom extends JavaPlugin
     private ListenerHandler listenerHandler;
 
     private HttpdServerHandler httpdServerHandler;
+
+    private StaffWorld staffWorld;
+    private Flatlands flatlands;
 
     private RankConfig rankConfig;
 
@@ -50,12 +55,17 @@ public class Freedom extends JavaPlugin
         this.httpdServerHandler = new HttpdServerHandler();
         httpdServerHandler.addHandler("/test", new UserModule());
         httpdServerHandler.start();
+
     }
 
 
     @Override
     public void onEnable()
     {
+        this.staffWorld = new StaffWorld();
+        this.flatlands = new Flatlands();
+
+
         this.playerData = new PlayerData();
 
         // -------------HANDLERS -------------- //

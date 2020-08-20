@@ -1,24 +1,28 @@
 package gg.freedomsite.freedom.ranking;
 
+import org.bukkit.ChatColor;
+
 public enum Rank
 {
-    NON(-2, "§aNon-Op", "§a"),
-    IMPOSTER(-1, "an §eImposter", "§e§lIMPOSTER"),
-    OP(0, "an §cOp", "§c§lOP"),
-    MOD(1, "a §9Mod", "§9§lMOD"),
-    ADMIN(2, "an §2Admin", "§2§lADMIN"),
-    EXECUTIVE(3, "an §6Executive", "§6§lEXECUTIVE"),
-    MANAGEMENT(4, "a part of §4Management", "§4§lMANAGEMENT");
+    NON(-2, "§aNon-Op", "§a", ChatColor.GREEN),
+    IMPOSTER(-1, "an §eImposter", "§e§lIMPOSTER", ChatColor.YELLOW),
+    OP(0, "an §7Op", "§7§lOP", ChatColor.GRAY),
+    MOD(1, "a §bMod", "§b§lMOD", ChatColor.AQUA),
+    ADMIN(2, "an §cAdmin", "§c§lADMIN", ChatColor.RED),
+    EXECUTIVE(3, "an §6Executive", "§6§lEXECUTIVE", ChatColor.GOLD),
+    MANAGEMENT(4, "apart of §4Management", "§4§lMANAGEMENT", ChatColor.DARK_RED);
 
     private int rankLevel;
     private String loginMsg;
     private String prefix;
+    private ChatColor color;
 
-    Rank(int rankLevel, String loginMsg, String prefix)
+    Rank(int rankLevel, String loginMsg, String prefix, ChatColor color)
     {
         this.rankLevel = rankLevel;
         this.loginMsg = loginMsg;
         this.prefix = prefix;
+        this.color = color;
     }
 
     public String getLoginMsg()
@@ -39,6 +43,10 @@ public enum Rank
     public boolean isAtleast(Rank rank)
     {
         return rankLevel >= rank.getRankLevel();
+    }
+
+    public ChatColor getColor() {
+        return color;
     }
 
     public static Rank findRank(String name)

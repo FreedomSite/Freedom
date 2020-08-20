@@ -17,8 +17,8 @@ public class PlayerData
     private final Map<UUID, FPlayer> players = Maps.newHashMap();
 
     public final String SELECT = "SELECT * FROM `players` WHERE uuid=?";
-    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `loginmessage`, `muted`, `frozen`, `imposter`, `commandspy`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, loginmessage=?, muted=?, frozen=?, imposter=?, commandspy=? WHERE uuid=?";
+    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `loginmessage`, `muted`, `frozen`, `imposter`, `commandspy`, `vanished`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, loginmessage=?, muted=?, frozen=?, imposter=?, commandspy=?, vanished=? WHERE uuid=?";
 
     private Freedom plugin = Freedom.get();
 
@@ -55,6 +55,7 @@ public class PlayerData
             boolean frozen = set.getBoolean("frozen");
             boolean imposter = set.getBoolean("imposter");
             boolean commandspy = set.getBoolean("commandspy");
+            boolean vanished = set.getBoolean("vanished");
 
             fplayer.setUsername(username);
             fplayer.setRank(rank);
@@ -65,6 +66,7 @@ public class PlayerData
             fplayer.setFrozen(frozen);
             fplayer.setImposter(imposter);
             fplayer.setCommandspy(commandspy);
+            fplayer.setVanished(vanished);
             return fplayer;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -101,6 +103,7 @@ public class PlayerData
             statement.setBoolean(8, player.isFrozen());
             statement.setBoolean(9, player.isImposter());
             statement.setBoolean(10, player.isCommandspy());
+            statement.setBoolean(11, player.isVanished());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -122,7 +125,8 @@ public class PlayerData
             statement.setBoolean(8, player.isFrozen());
             statement.setBoolean(9, player.isImposter());
             statement.setBoolean(10, player.isCommandspy());
-            statement.setString(11, player.getUuid().toString());
+            statement.setBoolean(11, player.isVanished());
+            statement.setString(12, player.getUuid().toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

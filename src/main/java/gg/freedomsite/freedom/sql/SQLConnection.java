@@ -45,6 +45,7 @@ public class SQLConnection
                     "\t`frozen` BOOLEAN,\n" +
                     "\t`imposter` BOOLEAN,\n" +
                     "\t`commandspy` BOOLEAN,\n" +
+                    "\t`vanished` BOOLEAN,\n" +
                     "\tPRIMARY KEY (`uuid`)\n" +
                     ");").execute();
         } catch (SQLException e) {
