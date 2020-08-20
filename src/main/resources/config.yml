@@ -1,3 +1,5 @@
+server:
+  motd: "&-Freedom"
 mysql:
   enabled: false #Will enable SQLite if false
   username: ""
