@@ -99,14 +99,10 @@ public class FreedomUtils
             players.stream()
                     .map(p -> Freedom.get().getPlayerData().getData(p.getUniqueId()))
                     .filter(p -> !p.isAdmin())
-                    .forEach(fPlayer -> {
-                        fPlayer.getPlayer().hidePlayer(Freedom.get(), player.getPlayer());
-                    });
+                    .forEach(fPlayer -> fPlayer.getPlayer().hidePlayer(Freedom.get(), player.getPlayer()));
         } else {
             player.getPlayer().setPlayerListName(player.getRank().getColor() + player.getPlayer().getName());
-            players.forEach(p -> {
-                p.showPlayer(Freedom.get(), player.getPlayer());
-            });
+            players.forEach(p -> p.showPlayer(Freedom.get(), player.getPlayer()));
         }
     }
 
@@ -116,6 +112,9 @@ public class FreedomUtils
         fPlayer.setCommandspy(false);
         fPlayer.setLoginMSG("");
         fPlayer.setStaffchat(false);
+        fPlayer.getPlayer().removeAttachment(fPlayer.getAttachment());
+        fPlayer.setAttachment(fPlayer.getPlayer().addAttachment(Freedom.get()));
+        Freedom.get().getRankConfig().setPlayerPermissions(fPlayer);
     }
 
 

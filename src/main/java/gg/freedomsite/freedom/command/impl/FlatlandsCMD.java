@@ -21,6 +21,12 @@ public class FlatlandsCMD extends FreedomCommand
         }
 
         Player player = (Player) sender;
+        if (player.getWorld().getName().equalsIgnoreCase("flatlands"))
+        {
+            player.sendMessage("§cYou are currently in the Flatlands!");
+            return;
+        }
         player.teleport(getPlugin().getFlatlands().getWorld().getSpawnLocation());
+        player.sendMessage("§7Teleporting to Flatlands..");
     }
 }

@@ -21,6 +21,12 @@ public class StaffWorldCMD extends FreedomCommand
         }
 
         Player player = (Player) sender;
+        if (player.getWorld().getName().equalsIgnoreCase("staffworld"))
+        {
+            player.sendMessage("§cYou are currently in StaffWorld!");
+            return;
+        }
         player.teleport(getPlugin().getStaffWorld().getWorld().getSpawnLocation());
+        player.sendMessage("§7Teleporting to StaffWorld..");
     }
 }

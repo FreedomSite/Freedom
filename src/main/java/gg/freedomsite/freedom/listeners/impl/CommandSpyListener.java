@@ -29,11 +29,20 @@ public class CommandSpyListener extends FreedomListener
                         if (staff.isCommandspy())
                         {
                             Date date = new Date();
-                            staff.getPlayer().sendMessage("§7["
+                            if (event.getMessage().startsWith("//"))
+                            {
+                                staff.getPlayer().sendMessage("§c["
+                                    + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":"
+                                    + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ":"
+                                    + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
+                                    + "] " + "[W/E] " + player.getName() + ": " + event.getMessage());
+                            } else if (event.getMessage().startsWith("/")){
+                                staff.getPlayer().sendMessage("§7["
                                     + (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ":"
                                     + (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ":"
                                     + (date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds())
                                     + "] " + player.getName() + ": " + event.getMessage());
+                            }
                         }
                     }
                 });

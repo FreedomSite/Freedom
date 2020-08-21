@@ -1,5 +1,6 @@
 package gg.freedomsite.freedom;
 
+import gg.freedomsite.freedom.banning.BanManager;
 import gg.freedomsite.freedom.config.RankConfig;
 import gg.freedomsite.freedom.handlers.CommandHandler;
 import gg.freedomsite.freedom.handlers.ListenerHandler;
@@ -8,6 +9,7 @@ import gg.freedomsite.freedom.httpd.modules.UserModule;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.sql.SQLConnection;
+import gg.freedomsite.freedom.tasks.UnbannerTask;
 import gg.freedomsite.freedom.world.Flatlands;
 import gg.freedomsite.freedom.world.StaffWorld;
 import lombok.AccessLevel;
@@ -28,6 +30,8 @@ public class Freedom extends JavaPlugin
     private ListenerHandler listenerHandler;
 
     private HttpdServerHandler httpdServerHandler;
+
+    private BanManager banManager;
 
     private StaffWorld staffWorld;
     private Flatlands flatlands;
@@ -53,8 +57,8 @@ public class Freedom extends JavaPlugin
         }
 
         this.httpdServerHandler = new HttpdServerHandler();
-        httpdServerHandler.addHandler("/test", new UserModule());
-        httpdServerHandler.start();
+        //httpdServerHandler.addHandler("/test", new UserModule());
+        //httpdServerHandler.start();
 
     }
 
@@ -62,6 +66,8 @@ public class Freedom extends JavaPlugin
     @Override
     public void onEnable()
     {
+        this.banManager = new BanManager(this);
+
         this.staffWorld = new StaffWorld();
         this.flatlands = new Flatlands();
 
@@ -77,33 +83,30 @@ public class Freedom extends JavaPlugin
         this.listenerHandler = new ListenerHandler();
         listenerHandler.register();
 
-        if (getServer().getOnlinePlayers().size() > 0)
-        {
-            for (Player players : getServer().getOnlinePlayers())
-            {
-                FPlayer fplayer = getPlayerData().getDataFromSQL(players.getUniqueId());
-                getPlayerData().getPlayers().put(players.getUniqueId(), fplayer);
-                //registering perms
-                fplayer.setAttachment(players.addAttachment(Freedom.get()));
-                getRankConfig().setPlayerPermissions(fplayer);
-            }
-        }
+        getServer().getOnlinePlayers().forEach(player -> {
+            FPlayer fplayer = getPlayerData().getDataFromSQL(player.getUniqueId());
+            getPlayerData().getPlayers().put(player.getUniqueId(), fplayer);
+
+            //registering perms
+            fplayer.setAttachment(player.addAttachment(Freedom.get()));
+            getRankConfig().setPlayerPermissions(fplayer);
+        });
+
+        new UnbannerTask();
     }
+
 
 
     @Override
     public void onDisable()
     {
 
-        if (getServer().getOnlinePlayers().size() > 0)
-        {
-            for (Player players : getServer().getOnlinePlayers())
-            {
-                getPlayerData().getPlayers().remove(players.getUniqueId());
-            }
-        }
+        getServer().getOnlinePlayers().forEach(player -> {
+            player.removeAttachment(getPlayerData().getData(player.getUniqueId()).getAttachment());
+            getPlayerData().getPlayers().remove(player.getUniqueId());
+        });
 
-        httpdServerHandler.stop();
+       // httpdServerHandler.stop();
 
         //commandHandler.unregister(); disable this for now
     }

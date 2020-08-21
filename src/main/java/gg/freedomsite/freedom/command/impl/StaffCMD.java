@@ -30,7 +30,7 @@ public class StaffCMD extends FreedomCommand
             if (args[0].equalsIgnoreCase("add"))
             {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (!player.hasPlayedBefore())
+                if (player.getPlayer() == null || !player.hasPlayedBefore())
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;
@@ -54,7 +54,7 @@ public class StaffCMD extends FreedomCommand
             else if (args[0].equalsIgnoreCase("remove"))
             {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (!player.hasPlayedBefore())
+                if (player.getPlayer() == null || !player.hasPlayedBefore())
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;
@@ -84,7 +84,7 @@ public class StaffCMD extends FreedomCommand
             if (args[0].equalsIgnoreCase("setrank"))
             {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (!player.hasPlayedBefore())
+                if (player.getPlayer() == null || !player.hasPlayedBefore())
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;

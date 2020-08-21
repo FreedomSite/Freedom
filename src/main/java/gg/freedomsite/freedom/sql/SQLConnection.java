@@ -48,6 +48,15 @@ public class SQLConnection
                     "\t`vanished` BOOLEAN,\n" +
                     "\tPRIMARY KEY (`uuid`)\n" +
                     ");").execute();
+            connection.prepareStatement("CREATE TABLE IF NOT EXISTS `bans` (\n" +
+                    "\t`banneduuid` VARCHAR(36),\n" +
+                    "\t`banner` VARCHAR(36),\n" +
+                    "\t`reason` VARCHAR(255),\n" +
+                    "\t`duration` BIGINT,\n" +
+                    "\t`banneddate` BIGINT,\n" +
+                    "\t`banned` BOOLEAN,\n" +
+                    "\tPRIMARY KEY (`banned`)\n" +
+                    ");").execute();
         } catch (SQLException e) {
             e.printStackTrace();
         }

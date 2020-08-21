@@ -5,12 +5,12 @@ import org.bukkit.ChatColor;
 public enum Rank
 {
     NON(-2, "§aNon-Op", "§a", ChatColor.GREEN),
-    IMPOSTER(-1, "an §eImposter", "§e§lIMPOSTER", ChatColor.YELLOW),
-    OP(0, "an §7Op", "§7§lOP", ChatColor.GRAY),
-    MOD(1, "a §bMod", "§b§lMOD", ChatColor.AQUA),
-    ADMIN(2, "an §cAdmin", "§c§lADMIN", ChatColor.RED),
-    EXECUTIVE(3, "an §6Executive", "§6§lEXECUTIVE", ChatColor.GOLD),
-    MANAGEMENT(4, "apart of §4Management", "§4§lMANAGEMENT", ChatColor.DARK_RED);
+    IMPOSTER(-1, "an §eImposter", "§e[Imp]", ChatColor.YELLOW),
+    OP(0, "an §7Op", "§7[Op]", ChatColor.GRAY),
+    MOD(1, "a §bMod", "§b[Mod]", ChatColor.AQUA),
+    ADMIN(2, "an §cAdmin", "§c[Admin]", ChatColor.RED),
+    EXECUTIVE(3, "an §6Executive", "§6[Exec]", ChatColor.GOLD),
+    MANAGEMENT(4, "apart of §4Management", "§4[Mgmt]", ChatColor.DARK_RED);
 
     private int rankLevel;
     private String loginMsg;

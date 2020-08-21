@@ -28,7 +28,7 @@ public class ListCMD extends FreedomCommand
             List<String> players = new ArrayList<>();
             Bukkit.getOnlinePlayers().stream()
                     .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
-                    .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + " " + ChatColor.WHITE + fplayer.getUsername()));
+                    .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + fplayer.getUsername()));
             sender.sendMessage("§eThere are currently §6" + players.size() + " §eout of §6" + Bukkit.getMaxPlayers() + " §eplayers online");
             sender.sendMessage(StringUtils.join(players, ChatColor.RESET + ", "));
             return;
@@ -52,7 +52,7 @@ public class ListCMD extends FreedomCommand
                         .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                         .filter(FPlayer::isVanished)
                         .filter(FPlayer::isAdmin)
-                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + " " + ChatColor.WHITE + fplayer.getUsername()));
+                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + fplayer.getUsername()));
                 sender.sendMessage("§eThere are currently §6" + players.size() + " §eout of §6" + Bukkit.getMaxPlayers() + " §evanished players online");
                 sender.sendMessage(StringUtils.join(players, ChatColor.RESET + ", "));
                 return;
@@ -63,7 +63,7 @@ public class ListCMD extends FreedomCommand
                 Bukkit.getOnlinePlayers().stream()
                         .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                         .filter(FPlayer::isAdmin)
-                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + " " + ChatColor.WHITE + fplayer.getUsername()));
+                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + fplayer.getUsername()));
                 sender.sendMessage("§eThere are currently §6" + players.size() + " §eout of §6" + Bukkit.getMaxPlayers() + " §estaff online");
                 sender.sendMessage(StringUtils.join(players, ChatColor.RESET + ", "));
                 return;
@@ -74,7 +74,7 @@ public class ListCMD extends FreedomCommand
                 Bukkit.getOnlinePlayers().stream()
                         .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                         .filter(FPlayer::isImposter)
-                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + " " + ChatColor.WHITE + fplayer.getUsername()));
+                        .collect(Collectors.toList()).forEach(fplayer -> players.add(fplayer.getRank().getPrefix() + fplayer.getUsername()));
                 sender.sendMessage("§eThere are currently §6" + players.size() + " §eout of §6" + Bukkit.getMaxPlayers() + " §eimposters online");
                 sender.sendMessage(StringUtils.join(players, ChatColor.RESET + ", "));
                 return;
