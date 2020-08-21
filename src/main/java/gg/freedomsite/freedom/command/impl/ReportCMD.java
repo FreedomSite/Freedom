@@ -1,6 +1,5 @@
 package gg.freedomsite.freedom.command.impl;
 
-import com.sk89q.worldedit.bukkit.BukkitBlockCommandSender;
 import gg.freedomsite.freedom.command.FreedomCommand;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.ranking.Rank;
@@ -9,8 +8,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.Collection;
 import java.util.logging.Logger;
 
 public class ReportCMD extends FreedomCommand
