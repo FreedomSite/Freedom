@@ -24,6 +24,11 @@ public class BanCMD extends FreedomCommand
     @Override
     public void run(CommandSender sender, String[] args)
     {
+        if (args.length == 0)
+        {
+            sender.sendMessage("§7Correct usage: §e" + getUsage());
+            return;
+        }
         OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
         FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
 
