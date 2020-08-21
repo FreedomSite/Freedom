@@ -46,29 +46,32 @@ public class PlayerData
             PreparedStatement statement = connection.prepareStatement(SELECT);
             statement.setString(1, uuid.toString());
             ResultSet set = statement.executeQuery();
-            FPlayer fplayer = new FPlayer(uuid);
-            String username = set.getString("username");
-            int rank = set.getInt("rank");
-            String ip = set.getString("ip");
-            String customtag = set.getString("customtag");
-            String loginMSG = set.getString("loginmessage");
-            boolean muted = set.getBoolean("muted");
-            boolean frozen = set.getBoolean("frozen");
-            boolean imposter = set.getBoolean("imposter");
-            boolean commandspy = set.getBoolean("commandspy");
-            boolean vanished = set.getBoolean("vanished");
+            if (set.next())
+            {
+                FPlayer fplayer = new FPlayer(uuid);
+                String username = set.getString("username");
+                int rank = set.getInt("rank");
+                String ip = set.getString("ip");
+                String customtag = set.getString("customtag");
+                String loginMSG = set.getString("loginmessage");
+                boolean muted = set.getBoolean("muted");
+                boolean frozen = set.getBoolean("frozen");
+                boolean imposter = set.getBoolean("imposter");
+                boolean commandspy = set.getBoolean("commandspy");
+                boolean vanished = set.getBoolean("vanished");
 
-            fplayer.setUsername(username);
-            fplayer.setRank(rank);
-            fplayer.setIp(ip);
-            fplayer.setTag(customtag);
-            fplayer.setLoginMSG(loginMSG);
-            fplayer.setMuted(muted);
-            fplayer.setFrozen(frozen);
-            fplayer.setImposter(imposter);
-            fplayer.setCommandspy(commandspy);
-            fplayer.setVanished(vanished);
-            return fplayer;
+                fplayer.setUsername(username);
+                fplayer.setRank(rank);
+                fplayer.setIp(ip);
+                fplayer.setTag(customtag);
+                fplayer.setLoginMSG(loginMSG);
+                fplayer.setMuted(muted);
+                fplayer.setFrozen(frozen);
+                fplayer.setImposter(imposter);
+                fplayer.setCommandspy(commandspy);
+                fplayer.setVanished(vanished);
+                return fplayer;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

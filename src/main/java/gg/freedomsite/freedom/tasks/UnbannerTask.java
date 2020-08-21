@@ -24,13 +24,17 @@ public class UnbannerTask extends BukkitRunnable
         Freedom.get().getBanManager().getBans().forEach(ban -> {
             if (ban.isBanned())
             {
-                LocalDateTime duration = LocalDateTime.ofInstant(Instant.ofEpochSecond(ban.getDuration()), ZoneId.ofOffset("UTC", ZoneOffset.UTC));
-                if (time.getHour() == duration.getHour() && time.getMinute() == duration.getMinute())
+                if (ban.getDuration() != 0)
                 {
-                    Freedom.get().getServer().broadcastMessage("§cCONSOLE - Unbanning " + Bukkit.getOfflinePlayer(ban.getBannedUUID()).getName());
-                    ban.setBanned(false);
-                    Freedom.get().getBanManager().removeBan(ban);
+                    LocalDateTime duration = LocalDateTime.ofInstant(Instant.ofEpochSecond(ban.getDuration()), ZoneId.ofOffset("UTC", ZoneOffset.UTC));
+                    if (time.getHour() == duration.getHour() && time.getMinute() == duration.getMinute())
+                    {
+                        Freedom.get().getServer().broadcastMessage("§cFreedom - Unbanning " + Bukkit.getOfflinePlayer(ban.getBannedUUID()).getName());
+                        ban.setBanned(false);
+                        Freedom.get().getBanManager().removeBan(ban);
+                    }
                 }
+
             }
         });
     }

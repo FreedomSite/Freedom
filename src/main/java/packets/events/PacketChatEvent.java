@@ -1,6 +1,6 @@
 package packets.events;
 
-import net.minecraft.server.v1_16_R2.PacketPlayInChat;
+import net.minecraft.server.v1_16_R1.PacketPlayInChat;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

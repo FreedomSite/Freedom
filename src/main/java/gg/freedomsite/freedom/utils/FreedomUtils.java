@@ -2,7 +2,7 @@ package gg.freedomsite.freedom.utils;
 
 import gg.freedomsite.freedom.Freedom;
 import gg.freedomsite.freedom.player.FPlayer;
-import net.minecraft.server.v1_16_R2.MinecraftServer;
+import net.minecraft.server.v1_16_R1.MinecraftServer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -10,7 +10,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.craftbukkit.v1_16_R2.CraftServer;
+import org.bukkit.craftbukkit.v1_16_R1.CraftServer;
 import org.bukkit.entity.Player;
 import org.json.JSONObject;
 

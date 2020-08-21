@@ -10,16 +10,14 @@ import gg.freedomsite.freedom.utils.FreedomUtils;
 import gg.freedomsite.freedom.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.*;
 
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.sql.Timestamp;
+import java.time.*;
+import java.util.TimeZone;
 
 public class PlayerListener extends FreedomListener
 {
@@ -86,28 +84,7 @@ public class PlayerListener extends FreedomListener
             event.setJoinMessage("");
         }
 
-        //ban testing x2
-
-        if (fPlayer.getPlayer().getName().equalsIgnoreCase("Taahh"))
-        {
-            long tenMinutes = TimeUtils.toFutureDate("1m");
-            Ban ban = new Ban(fPlayer.getPlayer().getUniqueId(), fPlayer.getPlayer().getUniqueId(), "TESTING TESTING", tenMinutes, LocalDateTime.now().toEpochSecond(ZoneOffset.UTC));
-            if (!getPlugin().getBanManager().isBanned(fPlayer.getUuid()))
-            {
-                getPlugin().getBanManager().executeBan(ban);
-            } else {
-                getPlugin().getBanManager().getBans(fPlayer.getUuid()).forEach(p -> {
-                    getPlugin().getLogger().info(p.getBannedUUID().toString());
-                    getPlugin().getLogger().info(p.getBanner().toString());
-                    getPlugin().getLogger().info(p.getReason());
-                    getPlugin().getLogger().info(String.valueOf(p.getDuration()));
-                    getPlugin().getLogger().info(String.valueOf(p.getDate()));
-                });
-            }
-        }
-
-
-
+        getPlugin().getWorldEditBridge().setLimit(fPlayer.getPlayer(), 8000);
     }
 
     @EventHandler
@@ -124,9 +101,17 @@ public class PlayerListener extends FreedomListener
     {
         PlayerData playerData = getPlugin().getPlayerData();
         FPlayer fPlayer = playerData.getData(event.getPlayer().getUniqueId());
+
+        if (fPlayer.isMuted())
+        {
+            fPlayer.getPlayer().sendMessage("§cYou are currently muted!");
+            event.setCancelled(true);
+            return;
+        }
+
         if (fPlayer.isImposter())
         {
-            event.setFormat(Rank.IMPOSTER.getPrefix() + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + event.getMessage());
+            event.setFormat(Rank.IMPOSTER.getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + event.getMessage());
             return;
         }
 
@@ -139,14 +124,79 @@ public class PlayerListener extends FreedomListener
             Bukkit.getOnlinePlayers().stream()
                     .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                     .filter(FPlayer::isAdmin)
-                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) %s §7%s §f%s", fPlayer.getRank().getPrefix(), fPlayer.getPlayer().getName(), event.getMessage())));
+                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) %s §7%s: §f%s", fPlayer.getRank().getPrefix(), fPlayer.getPlayer().getName(), event.getMessage())));
             event.setCancelled(true);
         } else {
-            event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + message :
-                    ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getUsername() + "§7:§r " + message);
+            event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message :
+                    ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message);
+        }
+    }
+
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event)
+    {
+        Player player = event.getPlayer();
+        FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+        if (fPlayer.isFrozen())
+        {
+            player.teleport(player.getLocation());
+            player.sendMessage("§cYou're currently frozen!");
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPreLogin(AsyncPlayerPreLoginEvent event)
+    {
+
+        FPlayer fPlayer = getPlugin().getPlayerData().getPlayerFromIP(event.getAddress().getHostAddress().trim());
+
+        if (fPlayer == null) {
+            if (getPlugin().getConfig().getBoolean("server.staffmode")) {
+                event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+                event.setKickMessage("§cStaffMode is currently enabled, only staff may join at this time.");
+                return;
+            }
         }
 
+        assert fPlayer != null;
+        if (getPlugin().getConfig().getBoolean("server.staffmode") && !fPlayer.isAdmin())
+        {
+            event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
+            event.setKickMessage("§cStaffMode is currently enabled, only staff may join at this time.");
+            return;
+        }
 
+        for (Ban ban : getPlugin().getBanManager().getBans())
+        {
+            if (ban.isBanned())
+            {
+                if (ban.getBannedUUID().toString().equalsIgnoreCase(fPlayer.getUuid().toString()))
+                {
+                    if (ban.getDuration() == 0)
+                    {
+                        OfflinePlayer banner = (ban.getBanner() == null ? null : Bukkit.getOfflinePlayer(ban.getBanner()));
+                         event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
+                         event.setKickMessage("§cYou have been permanently banned by §f" + (banner == null ? "Freedom" : banner.getName()) + "\n" +
+                                 "§cReason: §f" + ban.getReason() + "\n" +
+                                 "§cAppeal @ §fhttps://freedomsite.boards.net");
+                    } else {
+                        OfflinePlayer banner = (ban.getBanner() == null ? null : Bukkit.getOfflinePlayer(ban.getBanner()));
+
+                        LocalDateTime time = LocalDateTime.ofInstant(Instant.ofEpochSecond(ban.getDuration()), TimeZone.getTimeZone("America/New_York").toZoneId());
+
+                        ZonedDateTime convertedTime = time.atZone(ZoneId.of("UTC")).withZoneSameInstant(TimeZone.getTimeZone("America/New_York").toZoneId());
+                        convertedTime = convertedTime.minusHours(1);
+                        event.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_BANNED);
+                        event.setKickMessage("§cYou have been banned by §f" + (banner == null ? "Freedom" : banner.getName()) + " §cfor §f10 minutes!\n" +
+                                "§cReason: §f" + ban.getReason() + "\n" +
+                                "§cUnban Date: §f" + Timestamp.valueOf(convertedTime.toLocalDateTime()) + " EST");
+                    }
+
+                }
+            }
+        }
     }
 
 }

@@ -1,6 +1,9 @@
 name: Freedom
-version: 0.2
+version: 1.2
 description: The freedom core
 api-version: 1.16
-authors: [Taahh]
+loadbefore:
+  - Essentials
+  - EssentialsSpawn
+authors: [Taahh, vJayyy]
 main: gg.freedomsite.freedom.Freedom

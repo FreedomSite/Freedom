@@ -38,8 +38,11 @@ public class CommandHandler
         {
             try {
                 FreedomCommand command = freedomclass.newInstance();
-                getCommandMap().register(Freedom.get().getDescription().getName().toLowerCase(), new BlankCommand(command));
-                freedomCommandList.add(command);
+                if (command.isEnabled())
+                {
+                    getCommandMap().register(Freedom.get().getDescription().getName().toLowerCase(), new BlankCommand(command));
+                    freedomCommandList.add(command);
+                }
             } catch (InstantiationException | IllegalAccessException e) {
                 e.printStackTrace();
             }

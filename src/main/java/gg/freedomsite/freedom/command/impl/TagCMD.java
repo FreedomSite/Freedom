@@ -15,6 +15,7 @@ public class TagCMD extends FreedomCommand
 
     public TagCMD() {
         super("/tag [-s[ave]] <set | clear> [prefix | player]", "tag", "Modify the prefix", Rank.OP);
+        setEnabled(true);
     }
 
     @Override

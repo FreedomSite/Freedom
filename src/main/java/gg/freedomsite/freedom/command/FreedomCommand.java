@@ -2,6 +2,7 @@ package gg.freedomsite.freedom.command;
 
 import gg.freedomsite.freedom.Freedom;
 import gg.freedomsite.freedom.ranking.Rank;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Sound;
 import org.bukkit.command.CommandSender;
@@ -146,6 +147,21 @@ public abstract class FreedomCommand
     public Freedom getPlugin()
     {
         return Freedom.get();
+    }
+
+    public void bcastMsg(String message)
+    {
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            player.sendMessage(message);
+        });
+        Bukkit.getConsoleSender().sendMessage(message);
+    }
+
+    public String getName(CommandSender sender)
+    {
+        if (sender instanceof Player) return sender.getName();
+        else if (sender.getName().equalsIgnoreCase("CONSOLE")) return "Freedom";
+        else return sender.getName();
     }
 
 }

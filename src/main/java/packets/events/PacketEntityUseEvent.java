@@ -1,7 +1,7 @@
 package packets.events;
 
-import net.minecraft.server.v1_16_R2.Entity;
-import net.minecraft.server.v1_16_R2.PacketPlayInUseEntity;
+import net.minecraft.server.v1_16_R1.Entity;
+import net.minecraft.server.v1_16_R1.PacketPlayInUseEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

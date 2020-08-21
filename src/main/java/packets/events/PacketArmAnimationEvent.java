@@ -1,6 +1,6 @@
 package packets.events;
 
-import net.minecraft.server.v1_16_R2.PacketPlayInArmAnimation;
+import net.minecraft.server.v1_16_R1.PacketPlayInArmAnimation;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

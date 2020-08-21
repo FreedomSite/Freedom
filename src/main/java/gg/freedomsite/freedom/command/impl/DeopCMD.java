@@ -11,6 +11,7 @@ public class DeopCMD extends FreedomCommand
 {
     public DeopCMD() {
         super("/deop <player>", "deop", "Deops a player", Rank.MOD);
+        setEnabled(true);
     }
 
     @Override
@@ -46,7 +47,7 @@ public class DeopCMD extends FreedomCommand
         fPlayer.setRank(Rank.NON);
         getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
         getPlugin().getPlayerData().update(fPlayer);
-        Bukkit.broadcastMessage("§c" + sender.getName() + " - Deopping " + player.getName());
+        bcastMsg("§c" + sender.getName() + " - Deopping " + player.getName());
         player.sendMessage("§eYou have lost op!");
     }
 }

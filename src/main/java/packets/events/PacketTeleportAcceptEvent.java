@@ -1,6 +1,6 @@
 package packets.events;
 
-import net.minecraft.server.v1_16_R2.PacketPlayInTeleportAccept;
+import net.minecraft.server.v1_16_R1.PacketPlayInTeleportAccept;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;

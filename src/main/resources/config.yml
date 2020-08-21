@@ -1,7 +1,6 @@
 server:
-  motd: "&-Freedom §8- &-%mcversion%"
-  adminmode: false
-
+  motd: "&-Freedom §8- &-1.7 - %mcversion%"
+  staffmode: false
 mysql:
   enabled: false #Will enable SQLite if false
   username: ""

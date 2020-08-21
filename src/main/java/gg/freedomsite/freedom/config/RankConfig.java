@@ -91,10 +91,6 @@ public class RankConfig
     public void setPlayerPermissions(FPlayer player)
     {
         List<String> perms = getPermissions(player.getRank());
-        for (String perm : perms)
-        {
-            Freedom.get().getLogger().info(perm);
-        }
         for (String perm : player.getAttachment().getPermissions().keySet())
         {
             player.getAttachment().unsetPermission(perm);

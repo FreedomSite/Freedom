@@ -20,11 +20,18 @@
         </plugins>
     </build>
 
+    <repositories>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>https://maven.enginehub.org/repo/</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot</artifactId>
-            <version>1.16.2-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -52,6 +59,13 @@
             <groupId>me.totalfreedom</groupId>
             <artifactId>bukkittelnet</artifactId>
             <version>4.5</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>7.2.0-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

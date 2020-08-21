@@ -12,6 +12,7 @@ public class VanishCMD extends FreedomCommand
 {
     public VanishCMD() {
         super("/vanish", "vanish", "Vanish into thin air", new String[]{"v"}, Rank.MOD);
+        setEnabled(true);
     }
 
     @Override

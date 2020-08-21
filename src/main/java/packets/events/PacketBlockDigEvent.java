@@ -1,6 +1,6 @@
 package packets.events;
 
-import net.minecraft.server.v1_16_R2.PacketPlayInBlockDig;
+import net.minecraft.server.v1_16_R1.PacketPlayInBlockDig;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;

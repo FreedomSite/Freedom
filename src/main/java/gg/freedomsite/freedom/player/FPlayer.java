@@ -1,6 +1,7 @@
 package gg.freedomsite.freedom.player;
 
-import gg.freedomsite.freedom.Freedom;
+import gg.freedomsite.freedom.tasks.FreezeTask;
+import gg.freedomsite.freedom.tasks.MuteTask;
 import gg.freedomsite.freedom.ranking.Rank;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -33,6 +34,9 @@ public class FPlayer
 
     private PermissionAttachment attachment; //manages perms
 
+    private MuteTask muteTask;
+    private FreezeTask freezeTask;
+
     public FPlayer(UUID uuid)
     {
         this.uuid = uuid;
@@ -48,6 +52,9 @@ public class FPlayer
         this.vanished = false;
         this.staffchat = false;
         this.attachment = null;
+
+        this.muteTask = new MuteTask(this);
+        this.freezeTask = new FreezeTask(this);
     }
 
     public Rank getRank()

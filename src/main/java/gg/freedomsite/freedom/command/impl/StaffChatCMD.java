@@ -15,6 +15,7 @@ public class StaffChatCMD extends FreedomCommand
 
     public StaffChatCMD() {
         super("/staffchat [message]", "staffchat", "Sends a message or toggles staffchat", new String[]{"sc"}, Rank.MOD);
+        setEnabled(true);
     }
 
     @Override
@@ -34,8 +35,8 @@ public class StaffChatCMD extends FreedomCommand
             Bukkit.getOnlinePlayers().stream()
                     .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                     .filter(FPlayer::isAdmin)
-                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) " + (sender.getName().equalsIgnoreCase("CONSOLE") ? "§5[Console]" : "§5[Telnet]") + " §7%s §f%s", sender.getName(), finalMessage)));
-            getPlugin().getServer().getConsoleSender().sendMessage(String.format("§a(STAFF) " + (sender.getName().equalsIgnoreCase("CONSOLE") ? "§5[Console]" : "§5[Telnet]") + "  §7%s §f%s", sender.getName(), finalMessage));
+                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) " + (sender.getName().equalsIgnoreCase("CONSOLE") ? "§5[Console]" : "§5[Telnet]") + " §7%s: §f%s", sender.getName(), finalMessage)));
+            getPlugin().getServer().getConsoleSender().sendMessage(String.format("§a(STAFF) " + (sender.getName().equalsIgnoreCase("CONSOLE") ? "§5[Console]" : "§5[Telnet]") + "  §7%s: §f%s", sender.getName(), finalMessage));
             return;
         } else {
             Player player = (Player) sender;
@@ -60,8 +61,8 @@ public class StaffChatCMD extends FreedomCommand
             Bukkit.getOnlinePlayers().stream()
                     .map(p -> getPlugin().getPlayerData().getData(p.getUniqueId()))
                     .filter(FPlayer::isAdmin)
-                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) %s §7%s §f%s", fPlayer.getRank().getPrefix(), player.getName(), finalMessage)));
-            getPlugin().getServer().getConsoleSender().sendMessage(String.format("§a(STAFF) %s §7%s §f%s", fPlayer.getRank().getPrefix(), player.getName(), message));
+                    .forEach(staff -> staff.getPlayer().sendMessage(String.format("§a(STAFF) %s §7%s: §f%s", fPlayer.getRank().getPrefix(), player.getName(), finalMessage)));
+            getPlugin().getServer().getConsoleSender().sendMessage(String.format("§a(STAFF) %s §7%s: §f%s", fPlayer.getRank().getPrefix(), player.getName(), message));
             return;
         }
     }

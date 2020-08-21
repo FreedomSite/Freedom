@@ -31,7 +31,7 @@ public class BanManager
         {
             PreparedStatement statement = connection.prepareStatement(INSERT);
             statement.setString(1, ban.getBannedUUID().toString());
-            statement.setString(2, ban.getBanner().toString());
+            statement.setString(2, (ban.getBanner() == null ? "" : ban.getBanner().toString()));
             statement.setString(3, ban.getReason());
             statement.setLong(4, ban.getDuration());
             statement.setLong(5, ban.getDate());
@@ -44,17 +44,15 @@ public class BanManager
 
     public boolean isBanned(UUID uuid)
     {
-        try (Connection connection = plugin.getSql().getConnection())
+        for (Ban ban : getBans())
         {
-            PreparedStatement statement = connection.prepareStatement(SELECT);
-            statement.setString(1, uuid.toString());
-            ResultSet set = statement.executeQuery();
-            if (set.next())
+            if (ban.isBanned())
             {
-                return set.getBoolean("banned"); //default true
+                if (ban.getBannedUUID().toString().equalsIgnoreCase(uuid.toString()))
+                {
+                    return true;
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
         return false;
     }
@@ -67,11 +65,11 @@ public class BanManager
             statement.setString(1, uuid.toString());
             ResultSet set = statement.executeQuery();
             List<Ban> bans = new ArrayList<>();
-            if (set.next())
+            while (set.next())
             {
                 Ban ban = new Ban(
                         UUID.fromString(set.getString("banneduuid")),
-                        UUID.fromString(set.getString("banner")),
+                        (set.getString("banner").isEmpty() ? null : UUID.fromString(set.getString("banner"))),
                         set.getString("reason"),
                         set.getLong("duration"),
                         set.getLong("banneddate"));
@@ -87,10 +85,11 @@ public class BanManager
 
     public void removeBan(Ban ban)
     {
+        ban.setBanned(false);
         try (Connection con = plugin.getSql().getConnection())
         {
             PreparedStatement statement = con.prepareStatement(UPDATE);
-            statement.setString(1, ban.getBanner().toString());
+            statement.setString(1, (ban.getBanner() == null ? "" : ban.getBanner().toString()));
             statement.setString(2, ban.getReason());
             statement.setLong(3, ban.getDuration());
             statement.setLong(4, ban.getDate());
@@ -109,11 +108,11 @@ public class BanManager
         {
             PreparedStatement statement = con.prepareStatement("SELECT * FROM `bans`");
             ResultSet set = statement.executeQuery();
-            if (set.next())
+            while (set.next())
             {
                 Ban ban = new Ban(
                         UUID.fromString(set.getString("banneduuid")),
-                        UUID.fromString(set.getString("banner")),
+                        (set.getString("banner").isEmpty() ? null : UUID.fromString(set.getString("banner"))),
                         set.getString("reason"),
                         set.getLong("duration"),
                         set.getLong("banneddate"));
@@ -124,6 +123,21 @@ public class BanManager
             e.printStackTrace();
         }
         return bans;
+    }
+
+    public Ban getActiveBan(UUID uuid)
+    {
+        for (Ban ban : getBans())
+        {
+            if (ban.isBanned())
+            {
+                if (ban.getBannedUUID().toString().equalsIgnoreCase(uuid.toString()))
+                {
+                    return ban;
+                }
+            }
+        }
+        return null;
     }
 
 

@@ -18,6 +18,7 @@ public class ListCMD extends FreedomCommand
 
     public ListCMD() {
         super("/list [-v | -a | -i]", "list", "Views the list of players on the server", new String[]{"who"}, Rank.NON);
+        setEnabled(true);
     }
 
     @Override

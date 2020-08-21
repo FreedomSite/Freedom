@@ -9,6 +9,7 @@ public class FlatlandsCMD extends FreedomCommand
 {
     public FlatlandsCMD() {
         super("/flatlands", "flatlands", "Teleports you to the staff world", Rank.OP);
+        setEnabled(true);
     }
 
     @Override

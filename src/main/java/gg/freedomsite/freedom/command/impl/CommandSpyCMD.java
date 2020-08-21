@@ -10,8 +10,8 @@ public class CommandSpyCMD extends FreedomCommand
 {
     public CommandSpyCMD() {
         super("/commandspy", "cmdspy", "Toggles commandspy", new String[]{"cmdspy"}, Rank.MOD);
+        setEnabled(true);
     }
-
     @Override
     public void run(CommandSender sender, String[] args)
     {

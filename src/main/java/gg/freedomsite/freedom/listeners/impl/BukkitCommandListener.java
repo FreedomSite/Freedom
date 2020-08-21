@@ -48,17 +48,20 @@ public class BukkitCommandListener extends FreedomListener
         Player player = event.getPlayer();
         if (event.getMessage().startsWith("/reload") || event.getMessage().startsWith("/rl"))
         {
+            event.setCancelled(true);
             String[] args = event.getMessage().split(" ");
 
             if (!getPlugin().getPlayerData().getData(player.getUniqueId()).getRank().isAtleast(Rank.ADMIN))
             {
                 player.sendMessage("§cYou do not have permission to execute this command.");
+                return;
             }
 
 
             if (args.length == 1)
             {
                 player.sendMessage("§cAre you sure you want to use this command? Please type /reload confirm to confirm.");
+                return;
             }
             else if (args.length == 2)
             {
@@ -68,10 +71,10 @@ public class BukkitCommandListener extends FreedomListener
                     getPlugin().getServer().getOnlinePlayers().stream()
                             .map(p -> getPlugin().getPlayerData().getDataFromSQL(p.getUniqueId()))
                             .filter(p -> p.getRank().isAtleast(Rank.ADMIN))
-                            .forEach(p -> p.getPlayer().sendMessage("§e" + player.getName() + " is reloading the server"));
+                            .forEach(p -> p.getPlayer().sendMessage("§e" + player.getName() + " has reloaded the server"));
+                    return;
                 }
             }
-            event.setCancelled(true);
 
         }
     }

@@ -9,6 +9,7 @@ public class StaffWorldCMD extends FreedomCommand
 {
     public StaffWorldCMD() {
         super("/staffworld", "staffworld", "Teleports you to the staff world", Rank.OP);
+        setEnabled(true);
     }
 
     @Override

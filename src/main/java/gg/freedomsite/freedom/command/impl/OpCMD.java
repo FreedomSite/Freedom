@@ -13,6 +13,7 @@ public class OpCMD extends FreedomCommand
 
     public OpCMD() {
         super("/op <player>", "op", "Ops a player", Rank.OP);
+        setEnabled(true);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class OpCMD extends FreedomCommand
         fPlayer.setRank(Rank.OP);
         getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
         getPlugin().getPlayerData().update(fPlayer);
-        Bukkit.broadcastMessage("§b" + sender.getName() + " - Opping " + player.getName());
+        bcastMsg("§b" + sender.getName() + " - Opping " + player.getName());
         player.sendMessage("§eYou are now op!");
     }
 }

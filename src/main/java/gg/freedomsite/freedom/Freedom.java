@@ -1,6 +1,7 @@
 package gg.freedomsite.freedom;
 
 import gg.freedomsite.freedom.banning.BanManager;
+import gg.freedomsite.freedom.bridge.WorldEditBridge;
 import gg.freedomsite.freedom.config.RankConfig;
 import gg.freedomsite.freedom.handlers.CommandHandler;
 import gg.freedomsite.freedom.handlers.ListenerHandler;
@@ -8,6 +9,8 @@ import gg.freedomsite.freedom.httpd.HttpdServerHandler;
 import gg.freedomsite.freedom.httpd.modules.UserModule;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
+import gg.freedomsite.freedom.punishments.Freezer;
+import gg.freedomsite.freedom.punishments.Muter;
 import gg.freedomsite.freedom.sql.SQLConnection;
 import gg.freedomsite.freedom.tasks.UnbannerTask;
 import gg.freedomsite.freedom.world.Flatlands;
@@ -32,6 +35,8 @@ public class Freedom extends JavaPlugin
     private HttpdServerHandler httpdServerHandler;
 
     private BanManager banManager;
+    private Muter muter;
+    private Freezer freezer;
 
     private StaffWorld staffWorld;
     private Flatlands flatlands;
@@ -39,6 +44,8 @@ public class Freedom extends JavaPlugin
     private RankConfig rankConfig;
 
     private PlayerData playerData;
+
+    private WorldEditBridge worldEditBridge;
 
     @Override
     public void onLoad()
@@ -67,6 +74,8 @@ public class Freedom extends JavaPlugin
     public void onEnable()
     {
         this.banManager = new BanManager(this);
+        this.muter = new Muter();
+        this.freezer = new Freezer();
 
         this.staffWorld = new StaffWorld();
         this.flatlands = new Flatlands();
@@ -82,6 +91,12 @@ public class Freedom extends JavaPlugin
 
         this.listenerHandler = new ListenerHandler();
         listenerHandler.register();
+
+        if (getServer().getPluginManager().isPluginEnabled("WorldEdit"))
+        {
+            this.worldEditBridge = new WorldEditBridge();
+        }
+
 
         getServer().getOnlinePlayers().forEach(player -> {
             FPlayer fplayer = getPlayerData().getDataFromSQL(player.getUniqueId());

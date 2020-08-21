@@ -54,8 +54,7 @@ public class SQLConnection
                     "\t`reason` VARCHAR(255),\n" +
                     "\t`duration` BIGINT,\n" +
                     "\t`banneddate` BIGINT,\n" +
-                    "\t`banned` BOOLEAN,\n" +
-                    "\tPRIMARY KEY (`banned`)\n" +
+                    "\t`banned` BOOLEAN\n" +
                     ");").execute();
         } catch (SQLException e) {
             e.printStackTrace();

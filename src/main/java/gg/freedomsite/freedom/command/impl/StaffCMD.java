@@ -17,26 +17,23 @@ public class StaffCMD extends FreedomCommand
 {
     public StaffCMD() {
         super("/staff <add | remove | setrank> <player> [rank]", "staff", "Manages adding, removing, and setting the rank of players to and from staff", Rank.ADMIN);
+        setEnabled(true);
     }
 
     @Override
     public void run(CommandSender sender, String[] args)
     {
-
-
-
         if (args.length == 2)
         {
             if (args[0].equalsIgnoreCase("add"))
             {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (player.getPlayer() == null || !player.hasPlayedBefore())
+                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+                if (fplayer == null)
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;
                 }
-
-                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
 
                 if (fplayer.isAdmin())
                 {
@@ -46,21 +43,23 @@ public class StaffCMD extends FreedomCommand
 
                 fplayer.setRank(Rank.MOD);
                 fplayer.setCommandspy(true);
-                getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                if (player.isOnline())
+                {
+                    getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                }
                 getPlugin().getPlayerData().update(fplayer);
-                Bukkit.broadcastMessage("§c" + sender.getName() + " - Adding " + player.getName() + " to the staff list");
+                bcastMsg("§c" + sender.getName() + " - Adding " + fplayer.getUsername() + " to the staff list");
                 return;
             }
             else if (args[0].equalsIgnoreCase("remove"))
             {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (player.getPlayer() == null || !player.hasPlayedBefore())
+                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+                if (fplayer == null)
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;
                 }
-
-                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
 
                 if (!fplayer.isAdmin())
                 {
@@ -71,9 +70,12 @@ public class StaffCMD extends FreedomCommand
                 fplayer.setRank(Rank.OP);
                 fplayer.setCommandspy(false);
                 FreedomUtils.resetToOP(fplayer);
-                getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                if (player.isOnline())
+                {
+                    getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                }
                 getPlugin().getPlayerData().update(fplayer);
-                Bukkit.broadcastMessage("§c" + sender.getName() + " - Removing " + player.getName() + " from the staff list");
+                bcastMsg("§c" + sender.getName() + " - Removing " + player.getName() + " from the staff list");
                 return;
             } else {
                 sender.sendMessage("§7Correct usage: §e" + getUsage());
@@ -83,14 +85,25 @@ public class StaffCMD extends FreedomCommand
         {
             if (args[0].equalsIgnoreCase("setrank"))
             {
+
+                if (sender instanceof Player)
+                {
+                    Player playerSender = (Player) sender;
+                    FPlayer fSender = getPlugin().getPlayerData().getData(playerSender.getUniqueId());
+                    if (!fSender.getRank().isAtleast(Rank.EXECUTIVE))
+                    {
+                        sender.sendMessage(NO_PERMISSION);
+                        return;
+                    }
+                }
+
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[1]);
-                if (player.getPlayer() == null || !player.hasPlayedBefore())
+                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+                if (fplayer == null)
                 {
                     sender.sendMessage(PLAYER_NOT_FOUND);
                     return;
                 }
-
-                FPlayer fplayer = getPlugin().getPlayerData().getData(player.getUniqueId());
 
                 if (!fplayer.isAdmin())
                 {
@@ -111,12 +124,26 @@ public class StaffCMD extends FreedomCommand
                     return;
                 }
 
+                if (sender instanceof Player)
+                {
+                    Player playerSender = (Player) sender;
+                    FPlayer fSender = getPlugin().getPlayerData().getData(playerSender.getUniqueId());
+                    if (!fSender.getRank().isAtleast(rank))
+                    {
+                        sender.sendMessage("§cYou can't set a rank higher than yours!");
+                        return;
+                    }
+                }
+
                 fplayer.setRank(rank);
 
                 fplayer.setCommandspy(false);
-                getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                if (player.isOnline())
+                {
+                    getPlugin().getRankConfig().setPlayerPermissions(fplayer);
+                }
                 getPlugin().getPlayerData().update(fplayer);
-                Bukkit.broadcastMessage("§c" + sender.getName() + " - Setting " + player.getName() + "'s rank to " + rank.getPrefix());
+                bcastMsg("§c" + sender.getName() + " - Setting " + player.getName() + "'s rank to " + rank.name().toUpperCase());
                 return;
             }
         } else {
