@@ -31,13 +31,13 @@ public class OpallCMD extends FreedomCommand
             {
                 continue;
             }
+            bcastMsg("§b" + sender.getName() + " - Opping all players on the server!");
             fPlayer.setRank(Rank.OP);
             getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
             getPlugin().getPlayerData().update(fPlayer);
             player.sendMessage("§eYou are now op!");
         }
 
-        bcastMsg("§b" + sender.getName() + " - Opping all players on the server!");
 
     }
 }
