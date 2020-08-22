@@ -12,13 +12,25 @@ public class MuteCMD extends FreedomCommand
 
 
     public MuteCMD() {
-        super("/mute <player>", "mute", "Mutes a player", Rank.MOD);
+        super("/mute <player> [-a(ll)]", "mute", "Mutes a player", Rank.MOD);
         setEnabled(true);
     }
 
     @Override
     public void run(CommandSender sender, String[] args)
     {
+        if (args.length == 0)
+        {
+            sender.sendMessage("§7Correct usage: §e" + getUsage());
+            return;
+        }
+
+        if (args.length < 2)
+        {
+            sender.sendMessage("§7Correct usage: §e" + getUsage());
+            return;
+        }
+
         if (args[0].equalsIgnoreCase("-a"))
         {
             Bukkit.getOnlinePlayers().stream()

@@ -18,6 +18,15 @@ public class FreezeCMD extends FreedomCommand {
     @Override
     public void run(CommandSender sender, String[] args)
     {
+        if (args.length == 0) {
+            sender.sendMessage("§7Correct usage: §e" + getUsage());
+            return;
+
+        }
+        if (args.length < 1) {
+            sender.sendMessage("§7Correct usage: §e" + getUsage());
+            return;
+        }
 
         if (args[0].equalsIgnoreCase("-a"))
         {

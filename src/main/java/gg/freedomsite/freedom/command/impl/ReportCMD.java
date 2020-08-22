@@ -21,6 +21,12 @@ public class ReportCMD extends FreedomCommand
 
     @Override
     public void run(CommandSender sender, String[] args) {
+
+        if (sender.getName().equalsIgnoreCase("CONSOLE")) {
+            sender.sendMessage("§cThis command is for in-game use only!");
+            return;
+        }
+
         if (args.length == 0) {
             sender.sendMessage("§7Correct usage: §e" + getUsage());
             return;
@@ -53,11 +59,6 @@ public class ReportCMD extends FreedomCommand
         FPlayer fPlayer = getPlugin().getPlayerData().getData(target.getUniqueId());
         if (fPlayer.isAdmin()) {
             sender.sendMessage("§7You may not report staff members!");
-            return;
-        }
-
-        if (sender.getName().equalsIgnoreCase("CONSOLE")) {
-            sender.sendMessage("§cThis command is for in-game use only!");
             return;
         }
 
