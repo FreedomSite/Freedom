@@ -10,16 +10,19 @@ public class MOTDListener extends FreedomListener
 {
 
     @EventHandler
-    public void onServerPing(ServerListPingEvent event)
-    {
-        String motd = Freedom.get().getConfig().getString("server.motd");
-        assert motd != null;
-        motd = motd.replace("&-", "§" + FreedomUtils.randomColor().getChar());
-        motd = motd.replace("%mcversion%" /*tfm placeholder xd xd xd*/, FreedomUtils.getVersion());
+    public void onServerPing(ServerListPingEvent event) {
 
-        event.setMotd(motd);
+        if (getPlugin().getConfig().getBoolean("server.staffmode")) {
+            event.setMotd("§cFreedom - Staffmode is on!");
+        } else {
+            String motd = Freedom.get().getConfig().getString("server.motd");
+            assert motd != null;
+            motd = motd.replace("&-", "§" + FreedomUtils.randomColor().getChar());
+            motd = motd.replace("%mcversion%" /*tfm placeholder xd xd xd*/, FreedomUtils.getVersion());
+
+            event.setMotd(motd);
+        }
     }
-
 
 
 }
