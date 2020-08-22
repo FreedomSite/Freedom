@@ -4,6 +4,7 @@ import gg.freedomsite.freedom.command.FreedomCommand;
 import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.ranking.Rank;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -21,7 +22,18 @@ public class OpallCMD extends FreedomCommand
     {
         for (Player player : Bukkit.getOnlinePlayers())
         {
+            if (player == null) {
+                sender.sendMessage(ChatColor.GRAY + "Nobody is online to OP!");
+                return;
+            }
+
             FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
+
+            if (fPlayer.getRank() == Rank.OP) {
+                sender.sendMessage(ChatColor.GRAY + "Everyone is op!");
+                return;
+            }
+
             if (fPlayer.isAdmin())
             {
                 continue;

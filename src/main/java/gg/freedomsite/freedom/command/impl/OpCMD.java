@@ -46,10 +46,10 @@ public class OpCMD extends FreedomCommand
             return;
         }
 
+        bcastMsg("§b" + sender.getName() + " - Opping " + player.getName());
         fPlayer.setRank(Rank.OP);
         getPlugin().getRankConfig().setPlayerPermissions(fPlayer);
         getPlugin().getPlayerData().update(fPlayer);
-        bcastMsg("§b" + sender.getName() + " - Opping " + player.getName());
         player.sendMessage("§eYou are now op!");
     }
 }
