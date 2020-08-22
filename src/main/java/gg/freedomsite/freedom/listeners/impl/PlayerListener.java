@@ -10,14 +10,17 @@ import gg.freedomsite.freedom.utils.FreedomUtils;
 import gg.freedomsite.freedom.utils.TimeUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.GameMode;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.TimeZone;
+import java.util.UUID;
 
 public class PlayerListener extends FreedomListener
 {
@@ -29,6 +32,9 @@ public class PlayerListener extends FreedomListener
         Player player = event.getPlayer();
         PlayerData playerData = getPlugin().getPlayerData();
         FPlayer fPlayer;
+
+
+
         if (!playerData.exists(player.getUniqueId()))
         {
             fPlayer = new FPlayer(player.getUniqueId());
@@ -85,6 +91,11 @@ public class PlayerListener extends FreedomListener
         }
 
         getPlugin().getWorldEditBridge().setLimit(fPlayer.getPlayer(), 8000);
+        if (!fPlayer.isAdmin() && !fPlayer.isImposter() && !fPlayer.getRank().isAtleast(Rank.OP)) {
+            fPlayer.getPlayer().sendMessage(ChatColor.GRAY + "Setting you to OP...");
+            fPlayer.setRank(Rank.OP);
+            playerData.update(fPlayer);
+        }
     }
 
     @EventHandler
@@ -94,6 +105,17 @@ public class PlayerListener extends FreedomListener
         event.getPlayer().removeAttachment(playerData.getData(event.getPlayer().getUniqueId()).getAttachment());
         playerData.getPlayers().remove(event.getPlayer().getUniqueId());
 
+    }
+
+    @EventHandler
+    public void onTestEntityDamage(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player){
+            if (event.getEntity() instanceof Player && ((Player) event.getDamager()).getPlayer().getGameMode() == GameMode.CREATIVE) {
+                event.getDamager().sendMessage(ChatColor.RED + "[Freedom] Creative PVP is disabled!");
+                event.setCancelled(true);
+                return;
+            }
+        }
     }
 
     @EventHandler
