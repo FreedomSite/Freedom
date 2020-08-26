@@ -29,7 +29,6 @@ public class VerifyCMD extends FreedomCommand
             sender.sendMessage("§cThis player is not an imposter!");
             return;
         }
-
         fPlayer.setImposter(false);
         fPlayer.setIp(player.getAddress().getAddress().getHostAddress().trim());
         getPlugin().getPlayerData().update(fPlayer);

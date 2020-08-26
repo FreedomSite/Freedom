@@ -22,15 +22,9 @@ public class ReportCMD extends FreedomCommand
     @Override
     public void run(CommandSender sender, String[] args) {
 
-        if (sender.getName().equalsIgnoreCase("CONSOLE")) {
+        if (!(sender instanceof Player)) {
             sender.sendMessage("§cThis command is for in-game use only!");
             return;
-        }
-
-        if (args.length == 0) {
-            sender.sendMessage("§7Correct usage: §e" + getUsage());
-            return;
-
         }
         if (args.length < 2) {
             sender.sendMessage("§7Correct usage: §e" + getUsage());
@@ -45,13 +39,7 @@ public class ReportCMD extends FreedomCommand
             sender.sendMessage("§7User not online! Check spelling");
             return;
         }
-
-        if (args.length < 2) {
-            sender.sendMessage("§7Correct usage: §e" + getUsage());
-            return;
-        }
-
-        if (sender.getName() == target.getName()) {
+        if (sender.getName().equalsIgnoreCase(target.getName())) {
             sender.sendMessage("§7You may not report yourself!");
             return;
         }
@@ -63,16 +51,12 @@ public class ReportCMD extends FreedomCommand
         }
 
         // Get all online staff, and broadcast report
-        for (Player onlinestaff : Bukkit.getServer().getOnlinePlayers()) {
-            FPlayer staff = getPlugin().getPlayerData().getData(onlinestaff.getUniqueId());
-            if (staff.isAdmin()) {
-                onlinestaff.sendMessage("§c[REPORTS] §e" + sender.getName() + "§c has reported §e" + target.getName() + "§c for §e" + reason);
-            }
-        }
+        Bukkit.getOnlinePlayers().stream()
+                .map(staff -> getPlugin().getPlayerData().getData(staff.getUniqueId()))
+                .filter(FPlayer::isAdmin)
+                .forEach(staff -> staff.getPlayer().sendMessage("§c[REPORTS] §e" + sender.getName() + "§c has reported §e" + target.getName() + "§c for §e" + reason));
 
-        // Establish Logger, log report to console
-        Logger log = Bukkit.getLogger();
-        log.info("§c[REPORTS] §e" + sender.getName() + "§c has reported §e" + target.getName() + "§c for §e" + reason);
+        Bukkit.getConsoleSender().sendMessage("§c[REPORTS] §e" + sender.getName() + "§c has reported §e" + target.getName() + "§c for §e" + reason);
         sender.sendMessage(ChatColor.GREEN + "You have succesfully reported " + target.getName());
     }
 }

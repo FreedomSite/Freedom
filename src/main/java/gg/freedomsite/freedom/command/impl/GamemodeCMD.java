@@ -13,7 +13,7 @@ import org.bukkit.entity.Player;
 public class GamemodeCMD extends FreedomCommand
 {
     public GamemodeCMD() {
-        super("/gamemode ([s/survival] (c/creative])", "gamemode", "Change your gamemode", Rank.OP);
+        super("/gamemode <s[urvival] | c[creative]>", "gamemode", "Change your gamemode", Rank.OP);
         setEnabled(true);
     }
 
@@ -27,37 +27,20 @@ public class GamemodeCMD extends FreedomCommand
             return;
         }
 
-        if (args[0].equalsIgnoreCase("c"))
+        if (args[0].equalsIgnoreCase("c") || args[0].equalsIgnoreCase("creative"))
         {
             ((Player) sender).setGameMode(GameMode.CREATIVE);
             sender.sendMessage(ChatColor.GRAY + "Gamemode set to creative");
             return;
         }
 
-        if (args[0].equalsIgnoreCase("creative"))
-        {
-            ((Player) sender).setGameMode(GameMode.CREATIVE);
-            sender.sendMessage(ChatColor.GRAY + "Gamemode set to creative");
-            return;
-        }
-
-        if (args[0].equalsIgnoreCase("s"))
+        if (args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("survival"))
         {
             ((Player) sender).setGameMode(GameMode.SURVIVAL);
             sender.sendMessage(ChatColor.GRAY + "Gamemode set to survival");
             return;
-        }
-
-        if (args[0].equalsIgnoreCase("survival"))
-        {
-            ((Player) sender).setGameMode(GameMode.SURVIVAL);
-            sender.sendMessage(ChatColor.GRAY + "Gamemode set to survival");
-            return;
-        }
-
-        else {
+        } else {
             sender.sendMessage(ChatColor.GRAY + "Correct usage: " + ChatColor.YELLOW + getUsage());
-            return;
         }
 
     }

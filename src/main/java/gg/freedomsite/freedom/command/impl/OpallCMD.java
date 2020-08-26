@@ -20,13 +20,14 @@ public class OpallCMD extends FreedomCommand
     @Override
     public void run(CommandSender sender, String[] args)
     {
+        if (Bukkit.getOnlinePlayers().size() == 0)
+        {
+            sender.sendMessage(ChatColor.GRAY + "Nobody is online to OP!");
+            return;
+        }
+
         for (Player player : Bukkit.getOnlinePlayers())
         {
-            if (player == null) {
-                sender.sendMessage(ChatColor.GRAY + "Nobody is online to OP!");
-                return;
-            }
-
             FPlayer fPlayer = getPlugin().getPlayerData().getData(player.getUniqueId());
 
             if (fPlayer.getRank() == Rank.OP) {
