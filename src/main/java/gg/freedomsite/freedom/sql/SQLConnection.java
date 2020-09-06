@@ -31,7 +31,7 @@ public class SQLConnection
             {
                 connection = DriverManager.getConnection("jdbc:sqlite:" + new File(plugin.getDataFolder(), "database.db").getAbsolutePath());
             } else {
-                connection = DriverManager.getConnection("jdbc:mysql://" + host + ":" + port + "/" + database, username, password);
+                connection = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port + "/" + database, username, password);
             }
 
             connection.prepareStatement("CREATE TABLE IF NOT EXISTS `players` (\n" +
