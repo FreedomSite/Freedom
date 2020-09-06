@@ -64,6 +64,7 @@
             <groupId>me.totalfreedom</groupId>
             <artifactId>bukkittelnet</artifactId>
             <version>4.5</version>
+            <scope>provided</scope>
         </dependency>
 
         <dependency>
