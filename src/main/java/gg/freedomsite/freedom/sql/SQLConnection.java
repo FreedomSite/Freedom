@@ -31,6 +31,7 @@ public class SQLConnection
             {
                 connection = DriverManager.getConnection("jdbc:sqlite:" + new File(plugin.getDataFolder(), "database.db").getAbsolutePath());
             } else {
+                Class.forName("org.mariadb.jdbc.Driver");
                 connection = DriverManager.getConnection("jdbc:mariadb://" + host + ":" + port + "/" + database, username, password);
             }
 
@@ -56,7 +57,7 @@ public class SQLConnection
                     "\t`banneddate` BIGINT,\n" +
                     "\t`banned` BOOLEAN\n" +
                     ");").execute();
-        } catch (SQLException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
         return connection;
