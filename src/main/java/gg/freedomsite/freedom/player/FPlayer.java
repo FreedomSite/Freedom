@@ -30,6 +30,8 @@ public class FPlayer
     private boolean imposter;
     private boolean commandspy;
     private boolean vanished;
+    private long linkedDiscordID;
+
     private boolean staffchat; //does not need to be stored in db
 
     private PermissionAttachment attachment; //manages perms
@@ -50,6 +52,8 @@ public class FPlayer
         this.imposter = false;
         this.commandspy = false;
         this.vanished = false;
+        this.linkedDiscordID = 0;
+
         this.staffchat = false;
         this.attachment = null;
 

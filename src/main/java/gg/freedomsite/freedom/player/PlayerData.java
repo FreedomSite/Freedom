@@ -18,8 +18,8 @@ public class PlayerData
     private final Map<UUID, FPlayer> players = Maps.newHashMap();
 
     public final String SELECT = "SELECT * FROM `players` WHERE uuid=?";
-    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `loginmessage`, `muted`, `frozen`, `imposter`, `commandspy`, `vanished`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
-    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, loginmessage=?, muted=?, frozen=?, imposter=?, commandspy=?, vanished=? WHERE uuid=?";
+    public final String INSERT = "INSERT INTO `players` (`uuid`, `username`, `rank`, `ip`, `customtag`, `loginmessage`, `muted`, `frozen`, `imposter`, `commandspy`, `vanished`, `discordID`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+    public final String UPDATE = "UPDATE `players` SET uuid=?, username=?, rank=?, ip=?, customtag=?, loginmessage=?, muted=?, frozen=?, imposter=?, commandspy=?, vanished=?, discordID=? WHERE uuid=?";
 
     private Freedom plugin = Freedom.get();
 
@@ -59,6 +59,7 @@ public class PlayerData
                 boolean imposter = set.getBoolean("imposter");
                 boolean commandspy = set.getBoolean("commandspy");
                 boolean vanished = set.getBoolean("vanished");
+                long discordID = set.getLong("discordID");
 
                 fplayer.setUsername(username);
                 fplayer.setRank(rank);
@@ -70,6 +71,7 @@ public class PlayerData
                 fplayer.setImposter(imposter);
                 fplayer.setCommandspy(commandspy);
                 fplayer.setVanished(vanished);
+                fplayer.setLinkedDiscordID(discordID);
                 return fplayer;
             }
         } catch (SQLException e) {
@@ -98,6 +100,7 @@ public class PlayerData
                 boolean imposter = set.getBoolean("imposter");
                 boolean commandspy = set.getBoolean("commandspy");
                 boolean vanished = set.getBoolean("vanished");
+                long discordID = set.getLong("discordID");
 
                 fplayer.setUsername(username);
                 fplayer.setRank(rank);
@@ -109,6 +112,7 @@ public class PlayerData
                 fplayer.setImposter(imposter);
                 fplayer.setCommandspy(commandspy);
                 fplayer.setVanished(vanished);
+                fplayer.setLinkedDiscordID(discordID);
                 return fplayer;
             }
         } catch (SQLException e) {
@@ -147,6 +151,7 @@ public class PlayerData
             statement.setBoolean(9, player.isImposter());
             statement.setBoolean(10, player.isCommandspy());
             statement.setBoolean(11, player.isVanished());
+            statement.setLong(12, player.getLinkedDiscordID());
             statement.execute();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -169,7 +174,8 @@ public class PlayerData
             statement.setBoolean(9, player.isImposter());
             statement.setBoolean(10, player.isCommandspy());
             statement.setBoolean(11, player.isVanished());
-            statement.setString(12, player.getUuid().toString());
+            statement.setLong(12, player.getLinkedDiscordID());
+            statement.setString(13, player.getUuid().toString());
             statement.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();

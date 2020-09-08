@@ -47,6 +47,7 @@ public class SQLConnection
                     "\t`imposter` BOOLEAN,\n" +
                     "\t`commandspy` BOOLEAN,\n" +
                     "\t`vanished` BOOLEAN,\n" +
+                    "\t`discordID` BIGINT,\n" +
                     "\tPRIMARY KEY (`uuid`)\n" +
                     ");").execute();
             connection.prepareStatement("CREATE TABLE IF NOT EXISTS `bans` (\n" +
