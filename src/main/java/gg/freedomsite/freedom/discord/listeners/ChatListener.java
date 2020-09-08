@@ -16,7 +16,11 @@ public class ChatListener extends ListenerAdapter
     {
         String msg = event.getMessage().getContentRaw();
         Member member = event.getMember();
+
         assert member != null;
+
+        if (member.getUser().isBot()) return;
+
         Role role = member.getRoles().size() > 0 ? event.getMember().getRoles().get(0) : event.getGuild().getPublicRole();
 
         if (event.getChannel().getId().equalsIgnoreCase(Freedom.get().getDiscordBot().getChatChannel().getId()))
