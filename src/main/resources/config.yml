@@ -1,6 +1,12 @@
 server:
   motd: "&-Freedom §8- &-1.7 - %mcversion%"
   staffmode: false
+discord:
+  token: ""
+  guild-id: ""
+  channels:
+    console-id: ""
+    chat-id: ""
 mysql:
   enabled: false #Will enable SQLite if false
   username: ""

@@ -3,6 +3,8 @@ package gg.freedomsite.freedom;
 import gg.freedomsite.freedom.banning.BanManager;
 import gg.freedomsite.freedom.bridge.WorldEditBridge;
 import gg.freedomsite.freedom.config.RankConfig;
+import gg.freedomsite.freedom.discord.ConsoleAppender;
+import gg.freedomsite.freedom.discord.DiscordBot;
 import gg.freedomsite.freedom.handlers.CommandHandler;
 import gg.freedomsite.freedom.handlers.ListenerHandler;
 import gg.freedomsite.freedom.httpd.HttpdServerHandler;
@@ -17,9 +19,13 @@ import gg.freedomsite.freedom.world.Flatlands;
 import gg.freedomsite.freedom.world.StaffWorld;
 import lombok.AccessLevel;
 import lombok.Getter;
+import net.dv8tion.jda.api.EmbedBuilder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.awt.*;
 import java.io.File;
 
 @Getter
@@ -31,6 +37,8 @@ public class Freedom extends JavaPlugin
     private SQLConnection sql;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
+
+    private DiscordBot discordBot;
 
     private HttpdServerHandler httpdServerHandler;
 
@@ -63,7 +71,9 @@ public class Freedom extends JavaPlugin
             plugin.saveResource("database.db", false);
         }
 
-        this.httpdServerHandler = new HttpdServerHandler();
+        //this.httpdServerHandler = new HttpdServerHandler();
+        this.discordBot = new DiscordBot();
+        discordBot.start();
         //httpdServerHandler.addHandler("/test", new UserModule());
         //httpdServerHandler.start();
 
@@ -108,6 +118,10 @@ public class Freedom extends JavaPlugin
         });
 
         new UnbannerTask();
+
+        discordBot.getChatChannel().sendMessage(new EmbedBuilder().setDescription("Server started").setColor(Color.GREEN).build()).queue();
+        org.apache.logging.log4j.core.Logger log = (Logger) LogManager.getRootLogger();
+        log.addAppender(new ConsoleAppender());
     }
 
 
@@ -122,6 +136,8 @@ public class Freedom extends JavaPlugin
         });
 
        // httpdServerHandler.stop();
+
+        discordBot.getChatChannel().sendMessage(new EmbedBuilder().setDescription("Server stopped").setColor(Color.RED).build()).queue();
 
         //commandHandler.unregister(); disable this for now
     }

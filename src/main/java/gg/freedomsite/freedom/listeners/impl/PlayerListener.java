@@ -8,6 +8,7 @@ import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.ranking.Rank;
 import gg.freedomsite.freedom.utils.FreedomUtils;
 import gg.freedomsite.freedom.utils.TimeUtils;
+import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
@@ -17,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.*;
 
+import java.awt.*;
 import java.sql.Timestamp;
 import java.time.*;
 import java.util.TimeZone;
@@ -96,6 +98,8 @@ public class PlayerListener extends FreedomListener
             fPlayer.setRank(Rank.OP);
             playerData.update(fPlayer);
         }
+
+        getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription(player.getName() + " has connected.").setColor(Color.GREEN).build()).queue();
     }
 
     @EventHandler
@@ -105,6 +109,8 @@ public class PlayerListener extends FreedomListener
         event.getPlayer().removeAttachment(playerData.getData(event.getPlayer().getUniqueId()).getAttachment());
         playerData.getPlayers().remove(event.getPlayer().getUniqueId());
 
+
+        getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription(event.getPlayer().getName() + " has disconnected.").setColor(Color.RED).build()).queue();
     }
 
     @EventHandler
@@ -133,6 +139,7 @@ public class PlayerListener extends FreedomListener
 
         if (fPlayer.isImposter())
         {
+            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription("(IMP) " + fPlayer.getPlayer().getName() + ": " + event.getMessage()).setColor(Color.YELLOW).build()).queue();
             event.setFormat(Rank.IMPOSTER.getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + event.getMessage());
             return;
         }
@@ -151,6 +158,7 @@ public class PlayerListener extends FreedomListener
         } else {
             event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message :
                     ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message);
+            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription(fPlayer.getRank().getPrefix() + " " + fPlayer.getPlayer().getName() + ": " + event.getMessage()).setColor(Color.YELLOW).build()).queue();
         }
     }
 
