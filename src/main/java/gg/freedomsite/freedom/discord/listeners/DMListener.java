@@ -21,14 +21,7 @@ public class DMListener extends ListenerAdapter
         if (event.getChannelType() != ChannelType.PRIVATE) return;
         if (event.getAuthor().isBot()) return;
         User author = event.getAuthor();
-        if (!author.hasPrivateChannel())
-        {
-            author.openPrivateChannel().queue();
-        }
         if (!NumberUtils.isNumber(msg)) return;
-
-
-
         long code = Long.parseLong(msg);
         if (DiscordCache.isValidCode(code)) {
             FPlayer fPlayer = DiscordCache.getPlayerFromCode(code);
