@@ -19,13 +19,13 @@ public class ChatListener extends ListenerAdapter
 
         assert member != null;
 
-        if (member.getIdLong() == Freedom.get().getDiscordBot().getBot().getSelfUser().getIdLong()) return;
-        if (member.getUser().isBot()) return;
-
         Role role = member.getRoles().size() > 0 ? event.getMember().getRoles().get(0) : event.getGuild().getPublicRole();
 
         if (event.getChannel().getId().equalsIgnoreCase(Freedom.get().getDiscordBot().getChatChannel().getId()))
         {
+            if (member.getIdLong() == Freedom.get().getDiscordBot().getBot().getSelfUser().getIdLong()) return;
+            if (member.getUser().isBot()) return;
+
             Bukkit.broadcastMessage(ChatColor.YELLOW + "[DISCORD] " + ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + role.getName() + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + member.getUser().getName() + ": " + msg);
         }
 

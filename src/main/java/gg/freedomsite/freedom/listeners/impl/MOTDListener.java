@@ -19,7 +19,7 @@ public class MOTDListener extends FreedomListener
         {
             event.setMotd("§cFreedom §8- §cYou are banned.");
         }
-        if ((boolean) ConfigEntry.SERVER_STAFFMODE.getValue()) {
+        if (Freedom.get().getConfig().getBoolean("server.staffmode")) {
             event.setMotd("§cFreedom - StaffMode is On.");
         } else {
             String motd = Freedom.get().getConfig().getString("server.motd");
