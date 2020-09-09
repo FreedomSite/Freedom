@@ -27,6 +27,7 @@ public class ChatListener extends ListenerAdapter
             if (member.getUser().isBot()) return;
 
             Bukkit.broadcastMessage(ChatColor.YELLOW + "[DISCORD] " + ChatColor.DARK_GRAY + "[" + ChatColor.DARK_GREEN + role.getName() + ChatColor.DARK_GRAY + "] " + ChatColor.RESET + member.getUser().getName() + ": " + msg);
+            return;
         }
 
     }

@@ -11,7 +11,8 @@ import org.bukkit.entity.Player;
 public class LinkDiscordCMD extends FreedomCommand {
 
     public LinkDiscordCMD() {
-        super("/linkdiscord", "linkdiscord", "Links your discord", Rank.OP);
+        super("/discord", "discord", "Links your discord", Rank.OP);
+        setEnabled(true);
     }
 
     @Override
