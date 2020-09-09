@@ -5,6 +5,7 @@ import gg.freedomsite.freedom.cache.DiscordCache;
 import gg.freedomsite.freedom.player.FPlayer;
 import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.lang.math.NumberUtils;
@@ -17,13 +18,12 @@ public class DMListener extends ListenerAdapter
     public void onMessageReceived(MessageReceivedEvent event)
     {
         String msg = event.getMessage().getContentRaw();
-        Member member = event.getMessage().getMember();
-        assert member != null;
         if (event.getChannelType() != ChannelType.PRIVATE) return;
-        if (member.getUser().isBot()) return;
-        if (!member.getUser().hasPrivateChannel())
+        if (event.getAuthor().isBot()) return;
+        User author = event.getAuthor();
+        if (!author.hasPrivateChannel())
         {
-            member.getUser().openPrivateChannel().queue();
+            author.openPrivateChannel().queue();
         }
         if (!NumberUtils.isNumber(msg)) return;
 
@@ -32,7 +32,7 @@ public class DMListener extends ListenerAdapter
         long code = Long.parseLong(msg);
         if (DiscordCache.isValidCode(code)) {
             FPlayer fPlayer = DiscordCache.getPlayerFromCode(code);
-            fPlayer.setLinkedDiscordID(member.getIdLong());
+            fPlayer.setLinkedDiscordID(author.getIdLong());
             Freedom.get().getPlayerData().update(fPlayer);
             event.getMessage().getChannel().sendMessage("Successfully linked your account to: **" + fPlayer.getUsername() + "**.").queue();
         }
