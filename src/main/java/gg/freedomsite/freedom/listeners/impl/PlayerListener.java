@@ -7,7 +7,6 @@ import gg.freedomsite.freedom.player.FPlayer;
 import gg.freedomsite.freedom.player.PlayerData;
 import gg.freedomsite.freedom.ranking.Rank;
 import gg.freedomsite.freedom.utils.FreedomUtils;
-import gg.freedomsite.freedom.utils.TimeUtils;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -20,14 +19,14 @@ import org.bukkit.event.player.*;
 
 import java.awt.*;
 import java.sql.Timestamp;
-import java.time.*;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.TimeZone;
-import java.util.UUID;
 
 public class PlayerListener extends FreedomListener
 {
-    //TODO: PERMISSIONS DON'T UNSET!
-
     @EventHandler
     public void onJoin(PlayerJoinEvent event)
     {
@@ -40,7 +39,6 @@ public class PlayerListener extends FreedomListener
         if (!playerData.exists(player.getUniqueId()))
         {
             fPlayer = new FPlayer(player.getUniqueId());
-            fPlayer.setUsername(player.getName());
             fPlayer.setIp(player.getAddress().getAddress().getHostAddress().trim());
 
             playerData.insert(fPlayer);
@@ -66,14 +64,18 @@ public class PlayerListener extends FreedomListener
         }
 
         //login msgs
-        if (!fPlayer.isVanished() && fPlayer.isImposter() && fPlayer.isAdmin())
+        if (!fPlayer.isVanished() && fPlayer.isImposter() && !fPlayer.isAdmin() && fPlayer.getLinkedDiscordID() != 0) //if they aren't vanished, are an imposter, are not a staff member, and are linked
+        {
+            Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + ChatColor.YELLOW + "Player Imposter" + ChatColor.AQUA + "!");
+        }
+        else if (!fPlayer.isVanished() && fPlayer.isImposter() && fPlayer.isAdmin()) //are not vanished, is an imposter, and is a staff
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + Rank.IMPOSTER.getLoginMsg());
         }
-        else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && fPlayer.getLoginMSG().isEmpty())
+        else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && fPlayer.getLoginMSG().isEmpty()) //is not vanished, is not an imposter, is a staff, and doesnt have a custom login msg
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getRank().getLoginMsg());
-        } else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && !fPlayer.getLoginMSG().isEmpty())
+        } else if (!fPlayer.isVanished() && !fPlayer.isImposter() && fPlayer.isAdmin() && !fPlayer.getLoginMSG().isEmpty()) //is not vanished, is not an imposter, is a staff, and does have a custom login msg
         {
             Bukkit.broadcastMessage("§b" + fPlayer.getUsername() + " is " + fPlayer.getLoginMSG());
         }
@@ -114,9 +116,10 @@ public class PlayerListener extends FreedomListener
     }
 
     @EventHandler
-    public void onTestEntityDamage(EntityDamageByEntityEvent event) {
-        if (event.getDamager() instanceof Player){
-            if (event.getEntity() instanceof Player && ((Player) event.getDamager()).getPlayer().getGameMode() == GameMode.CREATIVE) {
+    public void onDamageEntityEvent(EntityDamageByEntityEvent event) {
+        if (event.getDamager() instanceof Player && event.getEntity() instanceof Player){
+            Player player = (Player) event.getDamager();
+            if (player.getGameMode()== GameMode.CREATIVE) {
                 event.getDamager().sendMessage(ChatColor.RED + "[Freedom] Creative PVP is disabled!");
                 event.setCancelled(true);
                 return;
@@ -139,7 +142,7 @@ public class PlayerListener extends FreedomListener
 
         if (fPlayer.isImposter())
         {
-            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription("(IMP) " + fPlayer.getPlayer().getName() + ": " + event.getMessage()).setColor(Color.YELLOW).build()).queue();
+            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription("(IMP) " + ChatColor.stripColor(fPlayer.getPlayer().getDisplayName()) + ": " + ChatColor.stripColor(event.getMessage())).setColor(Color.YELLOW).build()).queue();
             event.setFormat(Rank.IMPOSTER.getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + event.getMessage());
             return;
         }
@@ -158,7 +161,7 @@ public class PlayerListener extends FreedomListener
         } else {
             event.setFormat(fPlayer.getTag().isEmpty() ? fPlayer.getRank().getPrefix() + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message :
                     ChatColor.translateAlternateColorCodes('&', fPlayer.getTag()) + " " + ChatColor.WHITE + fPlayer.getPlayer().getDisplayName() + "§7:§r " + message);
-            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription(fPlayer.getRank().getPrefix() + " " + fPlayer.getPlayer().getName() + ": " + event.getMessage()).setColor(Color.YELLOW).build()).queue();
+            getPlugin().getDiscordBot().getChatChannel().sendMessage(new EmbedBuilder().setDescription(ChatColor.stripColor(fPlayer.getRank().getPrefix()) + " " + ChatColor.stripColor(fPlayer.getPlayer().getDisplayName()) + ": " + ChatColor.stripColor(event.getMessage())).setColor(Color.YELLOW).build()).queue();
         }
     }
 

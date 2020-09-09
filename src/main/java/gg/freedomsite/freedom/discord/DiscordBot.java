@@ -2,6 +2,7 @@ package gg.freedomsite.freedom.discord;
 
 import gg.freedomsite.freedom.Freedom;
 import gg.freedomsite.freedom.discord.listeners.ChatListener;
+import gg.freedomsite.freedom.discord.listeners.DMListener;
 import lombok.Getter;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
@@ -21,7 +22,7 @@ public class DiscordBot {
             bot = JDABuilder.createDefault(getToken()).disableIntents(GatewayIntent.DIRECT_MESSAGE_TYPING,
                     GatewayIntent.GUILD_MESSAGE_TYPING,
                     GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_VOICE_STATES).disableCache(CacheFlag.VOICE_STATE).build();
-            bot.addEventListener(new ChatListener());
+            bot.addEventListener(new ChatListener(), new DMListener());
         } catch (LoginException e) {
             e.printStackTrace();
 
