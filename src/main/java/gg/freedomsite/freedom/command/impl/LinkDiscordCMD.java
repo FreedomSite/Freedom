@@ -7,6 +7,7 @@ import org.apache.commons.lang.RandomStringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class LinkDiscordCMD extends FreedomCommand {
 
@@ -34,7 +35,15 @@ public class LinkDiscordCMD extends FreedomCommand {
 
         long code = Long.parseLong(RandomStringUtils.randomNumeric(6));
         DiscordCache.getLinkedCodes().put(code, player.getUniqueId());
+        player.sendMessage("§7Your temporary code is §e" + code);
+        player.sendMessage("§7This code will expire in 1 minute.");
 
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                DiscordCache.getLinkedCodes().remove(code);
+            }
+        }.runTaskLater(getPlugin(), 20 * 60);
 
     }
 }
