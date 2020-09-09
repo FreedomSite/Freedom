@@ -15,7 +15,7 @@ public class MOTDListener extends FreedomListener
     public void onServerPing(ServerListPingEvent event) {
 
         FPlayer fPlayer = getPlugin().getPlayerData().getPlayerFromIP(event.getAddress().getHostAddress().trim());
-        if (getPlugin().getBanManager().isBanned(fPlayer.getUuid()))
+        if (fPlayer != null && getPlugin().getBanManager().isBanned(fPlayer.getUuid()))
         {
             event.setMotd("§cFreedom §8- §cYou are banned.");
         }

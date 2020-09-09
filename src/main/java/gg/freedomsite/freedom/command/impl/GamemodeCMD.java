@@ -13,15 +13,13 @@ import org.bukkit.entity.Player;
 public class GamemodeCMD extends FreedomCommand
 {
     public GamemodeCMD() {
-        super("/gamemode <s[urvival] | c[creative]>", "gamemode", "Change your gamemode", Rank.OP);
+        super("/gamemode <s[urvival] | c[creative]>", "gamemode", "Change your gamemode", new String[]{"gm"}, Rank.OP);
         setEnabled(true);
     }
 
     @Override
     public void run(CommandSender sender, String[] args)
     {
-
-
         if (args.length != 1) {
             sender.sendMessage(ChatColor.GRAY + "Correct usage: " + ChatColor.YELLOW + getUsage());
             return;
