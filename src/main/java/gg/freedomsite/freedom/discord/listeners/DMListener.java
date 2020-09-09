@@ -20,8 +20,11 @@ public class DMListener extends ListenerAdapter
         Member member = event.getMessage().getMember();
         assert member != null;
         if (event.getChannelType() != ChannelType.PRIVATE) return;
-        member.getUser().openPrivateChannel().queue();
         if (member.getUser().isBot()) return;
+        if (!member.getUser().hasPrivateChannel())
+        {
+            member.getUser().openPrivateChannel().queue();
+        }
         if (!NumberUtils.isNumber(msg)) return;
 
 
