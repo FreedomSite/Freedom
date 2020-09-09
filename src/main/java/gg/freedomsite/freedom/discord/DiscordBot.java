@@ -19,7 +19,7 @@ public class DiscordBot {
 
     public void start() {
         try {
-            bot = JDABuilder.createDefault(getToken()).disableIntents(GatewayIntent.DIRECT_MESSAGE_TYPING,
+            bot = JDABuilder.createDefault(getToken()).disableIntents(
                     GatewayIntent.GUILD_MESSAGE_TYPING,
                     GatewayIntent.GUILD_PRESENCES, GatewayIntent.GUILD_VOICE_STATES).disableCache(CacheFlag.VOICE_STATE).build();
             bot.addEventListener(new ChatListener(), new DMListener());
