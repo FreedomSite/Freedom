@@ -12,7 +12,7 @@ import org.bukkit.entity.Player;
 public class UnbanCMD extends FreedomCommand
 {
     public UnbanCMD() {
-        super("/unban <player>", "unban", "Unban a player", new String[]{"funban, unban, pardon"}, Rank.MOD);
+        super("/unban <player>", "unban", "Unban a player", new String[]{"funban", "unban", "pardon"}, Rank.MOD);
         setEnabled(true);
     }
 
