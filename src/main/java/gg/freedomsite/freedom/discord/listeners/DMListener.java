@@ -20,6 +20,7 @@ public class DMListener extends ListenerAdapter
         String msg = event.getMessage().getContentRaw();
         if (event.getChannelType() != ChannelType.PRIVATE) return;
         if (event.getAuthor().isBot()) return;
+        if (event.getAuthor().getIdLong() == Freedom.get().getDiscordBot().getBot().getSelfUser().getIdLong()) return;
         User author = event.getAuthor();
         if (!NumberUtils.isNumber(msg)) return;
         long code = Long.parseLong(msg);
